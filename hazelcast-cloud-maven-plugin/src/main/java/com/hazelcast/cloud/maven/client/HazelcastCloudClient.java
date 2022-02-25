@@ -72,20 +72,6 @@ public class HazelcastCloudClient {
           clusterId).getBody();
     }
 
-    public String listCustomClasses(String clusterId) {
-        var headers = new HttpHeaders();
-        headers.add(AUTHORIZATION, "Bearer " + token);
-
-        var requestEntity = new HttpEntity<>(headers);
-
-        return restTemplate.exchange(
-          url("/cluster/{clusterId}/custom_classes"),
-          HttpMethod.GET,
-          requestEntity,
-          String.class,
-          clusterId).getBody();
-    }
-
     public void uploadCustomClasses(String clusterId, File file) {
         var headers = new HttpHeaders();
         headers.setContentType(MULTIPART_FORM_DATA);

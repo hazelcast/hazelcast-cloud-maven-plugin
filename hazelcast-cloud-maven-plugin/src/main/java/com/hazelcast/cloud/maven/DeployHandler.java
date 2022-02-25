@@ -1,5 +1,6 @@
 package com.hazelcast.cloud.maven;
 
+import com.hazelcast.cloud.maven.client.HazelcastCloudClient;
 import lombok.Data;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -8,8 +9,6 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
-
-import com.hazelcast.cloud.maven.client.HazelcastCloudClient;
 
 import static org.codehaus.plexus.util.StringUtils.isEmpty;
 
@@ -40,7 +39,7 @@ public class DeployHandler extends AbstractMojo {
         var jar = project.getArtifact().getFile();
 
         this.getLog().info(String.format(
-            "Artifact with custom classes %s is being uploaded to the Hazelcast cluster '%s'", jar, clusterId));
+          "Artifact with custom classes %s is being uploaded to the Hazelcast cluster '%s'", jar, clusterId));
 
         hazelcastCloudClient.uploadCustomClasses(clusterId, jar);
         for (int i = 0; i < 20; i++) {
@@ -52,11 +51,18 @@ public class DeployHandler extends AbstractMojo {
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-            } else break;
+            } else {
+                this.getLog()
+                  .info(String.format("Artifact with custom classes %s was uploaded and is ready to use", jar.getName()));
+                break;
+            }
         }
 
-        this.getLog().info(String.format("Artifact with custom classes %s was uploaded and is ready to use", jar.getName()));
-
+        var cluster = hazelcastCloudClient.getClusterStatus(clusterId);
+        if (!cluster.state.equals("RUNNING")) {
+            this.getLog()
+              .error(String.format("Something went wrong with uploading %s, state: %s", jar.getName(), cluster.state));
+        }
     }
 
     public void validateParams() throws MojoExecutionException {
@@ -76,6 +82,6 @@ public class DeployHandler extends AbstractMojo {
 
     private void propertyMissingError(String propertyName) throws MojoExecutionException {
         throw new MojoExecutionException(
-            String.format("Configuration property '%s' is missing or empty", propertyName));
+          String.format("Configuration property '%s' is missing or empty", propertyName));
     }
 }
