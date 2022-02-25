@@ -13,9 +13,9 @@ import com.hazelcast.cloud.maven.client.HazelcastCloudClient;
 
 import static org.codehaus.plexus.util.StringUtils.isEmpty;
 
-@Mojo(name = "custom-class-upload", defaultPhase = LifecyclePhase.DEPLOY)
+@Mojo(name = "deploy", defaultPhase = LifecyclePhase.DEPLOY)
 @Data
-public class CustomClassMojo extends AbstractMojo {
+public class DeployHandler extends AbstractMojo {
 
     @Parameter(property = "apiBaseUrl", required = true)
     private String apiBaseUrl;
@@ -43,6 +43,20 @@ public class CustomClassMojo extends AbstractMojo {
             "Artifact with custom classes %s is being uploaded to the Hazelcast cluster '%s'", jar, clusterId));
 
         hazelcastCloudClient.uploadCustomClasses(clusterId, jar);
+        for (int i = 0; i < 20; i++) {
+            var cluster = hazelcastCloudClient.getClusterStatus(clusterId);
+            if (!cluster.state.equals("RUNNING")) {
+                try {
+                    Thread.sleep(5000);
+                    System.out.println(".");
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            } else break;
+        }
+
+        this.getLog().info(String.format("Artifact with custom classes %s was uploaded and is ready to use", jar.getName()));
+
     }
 
     public void validateParams() throws MojoExecutionException {

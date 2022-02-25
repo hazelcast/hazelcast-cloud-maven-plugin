@@ -3,9 +3,11 @@ package com.hazelcast.cloud.maven.client;
 import java.io.File;
 import java.util.Map;
 
+import com.hazelcast.cloud.maven.model.Cluster;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
@@ -40,6 +42,48 @@ public class HazelcastCloudClient {
         return restTemplate
             .postForObject(url("/customers/api/login"), customerApiLogin, CustomerTokenResponse.class)
             .getToken();
+    }
+
+    public String getCluster(String clusterId) {
+        var headers = new HttpHeaders();
+        headers.add(AUTHORIZATION, "Bearer " + token);
+
+        var requestEntity = new HttpEntity<>(headers);
+
+        return restTemplate.exchange(
+          url("/cluster/{clusterId}"),
+          HttpMethod.GET,
+          requestEntity,
+          String.class,
+          clusterId).getBody();
+    }
+
+    public Cluster getClusterStatus(String clusterId) {
+        var headers = new HttpHeaders();
+        headers.add(AUTHORIZATION, "Bearer " + token);
+
+        var requestEntity = new HttpEntity<>(headers);
+
+        return restTemplate.exchange(
+          url("/cluster/{clusterId}"),
+          HttpMethod.GET,
+          requestEntity,
+          Cluster.class,
+          clusterId).getBody();
+    }
+
+    public String listCustomClasses(String clusterId) {
+        var headers = new HttpHeaders();
+        headers.add(AUTHORIZATION, "Bearer " + token);
+
+        var requestEntity = new HttpEntity<>(headers);
+
+        return restTemplate.exchange(
+          url("/cluster/{clusterId}/custom_classes"),
+          HttpMethod.GET,
+          requestEntity,
+          String.class,
+          clusterId).getBody();
     }
 
     public void uploadCustomClasses(String clusterId, File file) {
