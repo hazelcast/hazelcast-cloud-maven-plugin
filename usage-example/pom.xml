@@ -12,8 +12,10 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
 
+<!--        <apiBaseUrl>https://jetfire.test.hazelcast.cloud</apiBaseUrl>-->
+<!--        <cloudId>167</cloudId>-->
         <apiBaseUrl>https://dev.test.hazelcast.cloud</apiBaseUrl>
-        <cloudId>111</cloudId>
+        <cloudId>4653</cloudId>
         <apiKey></apiKey>
         <apiSecret></apiSecret>
     </properties>

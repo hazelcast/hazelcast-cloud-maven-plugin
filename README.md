@@ -5,7 +5,7 @@
 export HZC_API_KEY='***'
 export HZC_API_SECRET='***'
 
-mvn -DapiKey=$HZC_API_KEY -DapiSecret=$HZC_API_SECRET clean package hazelcast-cloud:custom-class-upload
+mvn -DapiKey=$HZC_API_KEY -DapiSecret=$HZC_API_SECRET clean package hazelcast-cloud:deploy
 ```
 where:
 - `HZC_API_KEY` - API key
