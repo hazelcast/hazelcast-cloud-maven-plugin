@@ -1,9 +1,8 @@
 package com.hazelcast.cloud.maven.client;
 
-import java.io.File;
-import java.util.Map;
-
 import com.hazelcast.cloud.maven.model.Cluster;
+import com.hazelcast.cloud.maven.model.CustomerApiLogin;
+import com.hazelcast.cloud.maven.model.CustomerTokenResponse;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -11,8 +10,14 @@ import org.springframework.http.HttpMethod;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import com.hazelcast.cloud.maven.model.CustomerApiLogin;
-import com.hazelcast.cloud.maven.model.CustomerTokenResponse;
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.util.Map;
+import java.util.stream.Stream;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA;
@@ -35,13 +40,13 @@ public class HazelcastCloudClient {
 
     private String login(String apiKey, String apiSecret) {
         var customerApiLogin = CustomerApiLogin.builder()
-            .apiKey(apiKey)
-            .apiSecret(apiSecret)
-            .build();
+          .apiKey(apiKey)
+          .apiSecret(apiSecret)
+          .build();
 
         return restTemplate
-            .postForObject(url("/customers/api/login"), customerApiLogin, CustomerTokenResponse.class)
-            .getToken();
+          .postForObject(url("/customers/api/login"), customerApiLogin, CustomerTokenResponse.class)
+          .getToken();
     }
 
     public String getCluster(String clusterId) {
@@ -56,6 +61,17 @@ public class HazelcastCloudClient {
           requestEntity,
           String.class,
           clusterId).getBody();
+    }
+
+    public Stream<String> getClusterLogs(String clusterId) throws IOException, InterruptedException {
+        var uri = URI.create(String.format("%s/cluster/%s/logs", apiBaseUrl, clusterId));
+        var httpClient = HttpClient.newHttpClient();
+        var req = HttpRequest.newBuilder(uri)
+          .header(AUTHORIZATION, "Bearer " + token)
+          .GET()
+          .build();
+
+        return httpClient.send(req, HttpResponse.BodyHandlers.ofLines()).body();
     }
 
     public Cluster getClusterStatus(String clusterId) {
@@ -83,13 +99,13 @@ public class HazelcastCloudClient {
         var requestEntity = new HttpEntity<>(body, headers);
 
         var pathParams = Map.of(
-            "clusterId", clusterId
+          "clusterId", clusterId
         );
 
         var response = restTemplate.postForEntity(
-            url("/cluster/{clusterId}/custom_classes"),
-            requestEntity,
-            String.class,
-            pathParams);
+          url("/cluster/{clusterId}/custom_classes"),
+          requestEntity,
+          String.class,
+          pathParams);
     }
 }
