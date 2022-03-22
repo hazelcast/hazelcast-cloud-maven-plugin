@@ -3,6 +3,10 @@ package com.hazelcast.cloud.maven.client;
 import com.hazelcast.cloud.maven.model.Cluster;
 import com.hazelcast.cloud.maven.model.CustomerApiLogin;
 import com.hazelcast.cloud.maven.model.CustomerTokenResponse;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Data;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -17,6 +21,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Map;
+import java.util.StringJoiner;
 import java.util.stream.Stream;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -64,16 +69,35 @@ public class HazelcastCloudClient {
     }
 
     public Stream<String> getClusterLogs(String clusterId) throws IOException, InterruptedException {
-        var uri = URI.create(String.format("%s/cluster/%s/logs", apiBaseUrl, clusterId));
+        var uri = URI.create(String.format("%s/cluster/%s/log-stream", apiBaseUrl, clusterId));
         var httpClient = HttpClient.newHttpClient();
         var req = HttpRequest.newBuilder(uri)
           .header(AUTHORIZATION, "Bearer " + token)
           .GET()
           .build();
 
-        return httpClient.send(req, HttpResponse.BodyHandlers.ofLines()).body();
-    }
+        ObjectMapper objectMapper = new ObjectMapper();
 
+        return httpClient.send(req, HttpResponse.BodyHandlers.ofLines())
+            .body()
+            .map(line -> line.replaceFirst("data:", ""))
+            .filter(s -> !s.trim().isEmpty())
+            .flatMap(line -> {
+                try {
+                    return Stream.of((Map<String, String>) new ObjectMapper().readValue(line.trim(), Map.class));
+                }
+                catch (JsonProcessingException e) {
+                    return Stream.of();
+                }
+            })
+            .filter(parsed -> !parsed.get("logger").equals("io.javalin.Javalin"))
+            .map(parsed -> String.join(" ",
+                parsed.get("time"),
+                parsed.get("logger"),
+                parsed.get("level"),
+                parsed.get("msg")
+                ));
+    }
     public Cluster getClusterStatus(String clusterId) {
         var headers = new HttpHeaders();
         headers.add(AUTHORIZATION, "Bearer " + token);
