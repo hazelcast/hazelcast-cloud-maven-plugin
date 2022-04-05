@@ -1,5 +1,7 @@
 package com.hazelcast.cloud.maven;
 
+import java.util.function.Supplier;
+
 import lombok.Data;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -35,13 +37,16 @@ public class DeployHandler extends AbstractMojo {
     @Parameter(defaultValue = "${project}", required = true, readonly = true)
     private MavenProject project;
 
+    private Supplier<HazelcastCloudClient> hazelcastCloudClientSupplier =
+        () -> new HazelcastCloudClient(apiBaseUrl, apiKey, apiSecret);
+
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         var startTime = currentTimeMillis();
 
         validateParams();
 
-        var hazelcastCloudClient = new HazelcastCloudClient(apiBaseUrl, apiKey, apiSecret);
+        var hazelcastCloudClient = hazelcastCloudClientSupplier.get();
         var jar = project.getArtifact().getFile();
 
         getLog().info(String.format(
@@ -57,7 +62,7 @@ public class DeployHandler extends AbstractMojo {
                 .build()
                 .execute(retryContext -> {
                     var secs = (currentTimeMillis() - startTime) / 1000;
-                    System.out.printf("[ %ds ]%n", secs);
+                    getLog().info(secs + "s");
 
                     var state = hazelcastCloudClient.getClusterStatus(clusterId).state;
                     switch (state) {
