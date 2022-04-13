@@ -26,14 +26,14 @@ public class DeployHandlerTest {
     @MethodSource
     public void should_fail_given_invalid_params(
         String apiBaseUrl,
-        String clusterId,
+        String clusterName,
         String apiKey,
         String apiSecret
     ) {
         // given
         var deployHandler = new DeployHandler();
         deployHandler.setApiBaseUrl(apiBaseUrl);
-        deployHandler.setClusterId(clusterId);
+        deployHandler.setClusterName(clusterName);
         deployHandler.setApiKey(apiKey);
         deployHandler.setApiSecret(apiSecret);
 
@@ -48,11 +48,24 @@ public class DeployHandlerTest {
 
     private static Stream<Arguments> should_fail_given_invalid_params() {
         return Stream.of(
-            Arguments.of(null, "1234", "api-key", "api-secret"),
+            Arguments.of(null, "de-1234", "api-key", "api-secret"),
             Arguments.of("https://coordinator.hazelcast.cloud", null, "api-key", "api-key"),
-            Arguments.of("https://coordinator.hazelcast.cloud", "1234", null, "api-secret"),
-            Arguments.of("https://coordinator.hazelcast.cloud", "1234", "api-key", null)
-        );
+            Arguments.of("https://coordinator.hazelcast.cloud", "de-1234", null, "api-secret"),
+            Arguments.of("https://coordinator.hazelcast.cloud", "de-1234", "api-key", null)
+            );
+    }
+
+    @Test
+    public void should_fail_given_invalid_cluster_name() {
+        // given
+        var deployHandler = deployHandler();
+        deployHandler.setClusterName("1234");
+
+        // when
+        var exception = assertThrows(MojoExecutionException.class, deployHandler::execute);
+
+        // then
+        then(exception.getMessage()).isEqualTo("Invalid clusterName (example: de-1234)");
     }
 
     @Test
@@ -105,7 +118,7 @@ public class DeployHandlerTest {
     private DeployHandler deployHandler() {
         var deployHandler = new DeployHandler();
         deployHandler.setApiBaseUrl("https://localhost");
-        deployHandler.setClusterId("1234");
+        deployHandler.setClusterName("de-1234");
         deployHandler.setApiKey("api-key");
         deployHandler.setApiSecret("api-key");
 
