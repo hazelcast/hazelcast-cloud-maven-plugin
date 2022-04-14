@@ -111,6 +111,10 @@ public class DeployHandler extends AbstractMojo {
         if (isEmpty(apiSecret)) {
             propertyMissingError("apiSecret");
         }
+        if (project.getArtifact() == null || project.getArtifact().getFile() == null) {
+            throw new MojoExecutionException(
+                "Project artifact (jar) is not packaged. Execute 'package' goal prior to 'deploy'.");
+        }
     }
 
     private void propertyMissingError(String propertyName) throws MojoExecutionException {
