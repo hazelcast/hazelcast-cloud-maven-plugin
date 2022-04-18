@@ -16,10 +16,10 @@
         <plugin>
             <groupId>com.hazelcast.cloud</groupId>
             <artifactId>hazelcast-cloud-maven-plugin</artifactId>
-            <version>0.2-SNAPSHOT</version>
+            <version>0.3-SNAPSHOT</version>
             <configuration>
                 <apiBaseUrl>https://coordinator.hazelcast.cloud</apiBaseUrl>
-                <clusterId>1234</clusterId>
+                <clusterName>de-1234</clusterName>
                 <apiKey>${apiKey}</apiKey>
                 <apiSecret>${apiSecret}</apiSecret>
             </configuration>
@@ -30,12 +30,12 @@
 
 ## Configuration
 
-| Parameter  | Description                                        |
-|------------|----------------------------------------------------|
-| apiBaseUrl | API base URL (example: https://coordinator.hazelcast.cloud) |
-| clusterId | Cluster Id                                         |
-| apiKey | API key*                                           |
-| apiSecret| API secret*                                        |
+| Parameter   | Description                                                 |
+|-------------|-------------------------------------------------------------|
+| apiBaseUrl  | API base URL (example: https://coordinator.hazelcast.cloud) |
+| clusterName | Cluster name (example: de-1234)                             |
+| apiKey      | API key*                                                    |
+| apiSecret   | API secret*                                                 |
 
 *API key and secret can be generated here https://cloud.hazelcast.com/settings/developer
 
