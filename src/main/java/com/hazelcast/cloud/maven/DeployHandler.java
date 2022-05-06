@@ -3,6 +3,7 @@ package com.hazelcast.cloud.maven;
 import java.util.function.Supplier;
 
 import lombok.Data;
+import lombok.var;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;

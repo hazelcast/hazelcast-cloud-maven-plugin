@@ -1,8 +1,10 @@
 package com.hazelcast.cloud.maven.client;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.Map;
 
+import lombok.var;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -60,9 +62,8 @@ public class HazelcastCloudClient {
         var body = new LinkedMultiValueMap<String, Object>();
         body.add("customClassesFile", new FileSystemResource(file));
 
-        var pathParams = Map.of(
-            "clusterId", clusterId
-        );
+        var pathParams = new HashMap<String, String>();
+        pathParams.put("clusterId", clusterId);
 
         restTemplate.postForEntity(
             url("/cluster/{clusterId}/custom_classes"),
