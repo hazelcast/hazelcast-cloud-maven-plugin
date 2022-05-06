@@ -26,8 +26,8 @@ public class DeployHandler extends AbstractMojo {
     @Parameter(property = "apiBaseUrl", required = true)
     private String apiBaseUrl;
 
-    @Parameter(property = "clusterId", required = true)
-    private String clusterId;
+    @Parameter(property = "clusterName", required = true)
+    private String clusterName;
 
     @Parameter(property = "apiKey", required = true)
     private String apiKey;
@@ -46,12 +46,13 @@ public class DeployHandler extends AbstractMojo {
         var startTime = currentTimeMillis();
 
         validateParams();
+        var clusterId = extractClusterId(clusterName);
 
         var hazelcastCloudClient = hazelcastCloudClientSupplier.get();
         var jar = project.getArtifact().getFile();
 
         getLog().info(String.format(
-            "Artifact with custom classes %s is being uploaded to the Hazelcast cluster '%s'", jar, clusterId));
+            "Artifact with custom classes %s is being uploaded to the Hazelcast cluster '%s'", jar, clusterName));
 
         hazelcastCloudClient.uploadCustomClasses(clusterId, jar);
 
@@ -90,18 +91,30 @@ public class DeployHandler extends AbstractMojo {
         }
     }
 
+    public String extractClusterId(String clusterName) throws MojoExecutionException {
+        if (!clusterName.matches("[a-z]{2}-\\d+")) {
+            throw new MojoExecutionException("Invalid clusterName (example: de-1234)");
+        }
+
+        return clusterName.split("-")[1];
+    }
+
     public void validateParams() throws MojoExecutionException {
         if (isEmpty(apiBaseUrl)) {
             propertyMissingError("apiBaseUrl");
         }
-        if (isEmpty(clusterId)) {
-            propertyMissingError("clusterId");
+        if (isEmpty(clusterName)) {
+            propertyMissingError("clusterName");
         }
         if (isEmpty(apiKey)) {
             propertyMissingError("apiKey");
         }
         if (isEmpty(apiSecret)) {
             propertyMissingError("apiSecret");
+        }
+        if (project.getArtifact() == null || project.getArtifact().getFile() == null) {
+            throw new MojoExecutionException(
+                "Project artifact (jar) is not packaged. Execute 'package' goal prior to 'deploy'.");
         }
     }
 
