@@ -16,7 +16,7 @@
         <plugin>
             <groupId>com.hazelcast.cloud</groupId>
             <artifactId>hazelcast-cloud-maven-plugin</artifactId>
-            <version>0.3-SNAPSHOT</version>
+            <version>0.4-SNAPSHOT</version>
             <configuration>
                 <apiBaseUrl>https://coordinator.hazelcast.cloud</apiBaseUrl>
                 <clusterName>de-1234</clusterName>
