@@ -1,0 +1,97 @@
+= Maven Plugin for Hazelcast Cloud
+:description: This plugin is a tool for developing cluster-side modules for Hazelcast Serverless.
+:cloud-base-url: uat.hazelcast.cloud
+:page-serverless: true
+:github: true
+
+ifndef::github[]
+This plugin is a tool for developing xref:cluster-side-modules.adoc[cluster-side modules] for Hazelcast Serverless.
+endif::[]
+
+ifdef::github[]
+{description}
+endif::[]
+
+== Before you Begin
+
+Make sure that you have the following:
+
+- link:https://maven.apache.org/install.html[Maven]
+- `JAVA_HOME` environment variable set to JDK 8, 9, or 11
+
+== Usage example
+
+[source,xml,subs="attributes+"]
+----
+<pluginRepositories>
+    <pluginRepository>
+        <id>github</id>
+        <name>Hazelcast Maven Packages</name>
+        <url>https://maven.pkg.github.com/hazelcast/hazelcast-cloud-maven-plugin</url>
+    </pluginRepository>
+</pluginRepositories>
+
+<build>
+    <plugins>
+        <plugin>
+            <groupId>com.hazelcast.cloud</groupId>
+            <artifactId>hazelcast-cloud-maven-plugin</artifactId>
+            <version>0.4-SNAPSHOT</version>
+            <configuration>
+                <apiBaseUrl>https://{cloud-base-url}</apiBaseUrl>
+                <clusterName>de-1234</clusterName>
+                <apiKey>${apiKey}</apiKey>
+                <apiSecret>${apiSecret}</apiSecret>
+            </configuration>
+        </plugin>
+    </plugins>
+</build>
+----
+
+== Configuration
+
+[cols="1m,2a,1m"]
+|===
+| Parameter|Description| Example  
+
+| apiBaseUrl
+| Cloud API base URL
+
+Leave this empty if you are using production.
+|https://{cloud-base-url}
+
+| clusterName
+| Cluster name
+
+Find your cluster name in the Hazelcast Cloud UI by clicking *Connect your Application*.
+| pr-1234
+
+| apiKey
+| API key
+
+link:https://console-{cloud-base-url}/settings/developer[Generate an API key and secret] in the Hazelcast Cloud UI.
+a|N/A
+
+| apiSecret
+| API secret
+
+link:https://console-{cloud-base-url}/settings/developer[Generate an API key and secret] in the Hazelcast Cloud UI.
+a|N/A
+
+|===
+
+== Goals
+
+[cols="1m,2a"]
+|===
+| Goal | Description
+
+| deploy
+| Package the Java files into an executable JAR file and upload that file to the Hazelcast Serverless cluster
+|===
+
+== Execution Example
+
+```shell
+mvn clean package hazelcast-cloud:deploy
+```
