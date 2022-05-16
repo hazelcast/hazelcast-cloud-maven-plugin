@@ -2,7 +2,7 @@
 :description: This plugin is a tool for developing cluster-side modules for Hazelcast Serverless.
 :cloud-base-url: uat.hazelcast.cloud
 :page-serverless: true
-:github: true
+:page-github: true
 
 ifndef::github[]
 This plugin is a tool for developing xref:cluster-side-modules.adoc[cluster-side modules] for Hazelcast Serverless.
@@ -58,7 +58,7 @@ Make sure that you have the following:
 | Cloud API base URL
 
 Leave this empty if you are using production.
-|https://{cloud-base-url}
+|\https://{cloud-base-url}
 
 | clusterName
 | Cluster name
