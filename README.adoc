@@ -39,8 +39,8 @@ Make sure that you have the following:
             <configuration>
                 <apiBaseUrl>https://{cloud-base-url}</apiBaseUrl>
                 <clusterName>de-1234</clusterName>
-                <apiKey>${apiKey}</apiKey>
-                <apiSecret>${apiSecret}</apiSecret>
+                <apiKey>$\{apiKey}</apiKey>
+                <apiSecret>$\{apiSecret}</apiSecret>
             </configuration>
         </plugin>
     </plugins>
