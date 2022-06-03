@@ -1,9 +1,17 @@
 package com.hazelcast.cloud.maven.client;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.var;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
@@ -70,6 +78,37 @@ public class HazelcastCloudClient {
             new HttpEntity<>(body, headers),
             String.class,
             pathParams);
+    }
+
+    public Stream<String> getClusterLogs(String clusterId) throws IOException, InterruptedException {
+        var uri = URI.create(String.format("%s/cluster/%s/log-stream", apiBaseUrl, clusterId));
+        var httpClient = HttpClient.newHttpClient();
+        var req = HttpRequest.newBuilder(uri)
+            .header(AUTHORIZATION, "Bearer " + token)
+            .GET()
+            .build();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        return httpClient.send(req, HttpResponse.BodyHandlers.ofLines())
+            .body()
+            .map(line -> line.replaceFirst("data:", ""))
+            .filter(s -> !s.trim().isEmpty())
+            .flatMap(line -> {
+                try {
+                    return Stream.of((Map<String, String>) new ObjectMapper().readValue(line.trim(), Map.class));
+                }
+                catch (JsonProcessingException e) {
+                    return Stream.of();
+                }
+            })
+            .filter(parsed -> !parsed.get("logger").equals("io.javalin.Javalin"))
+            .map(parsed -> String.join(" ",
+                parsed.get("time"),
+                parsed.get("logger"),
+                parsed.get("level"),
+                parsed.get("msg")
+            ));
     }
 
     private HttpHeaders headersWithAuth() {
