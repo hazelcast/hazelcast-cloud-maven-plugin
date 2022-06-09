@@ -1,5 +1,7 @@
 # Maven Plugin for Hazelcast Cloud
 
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.hazelcast.cloud/hazelcast-cloud-maven-plugin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.hazelcast.cloud/hazelcast-cloud-maven-plugin)
+
 ## Usage example
 
 ```xml
