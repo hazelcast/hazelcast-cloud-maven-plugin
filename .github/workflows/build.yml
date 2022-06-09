@@ -19,8 +19,3 @@ jobs:
       - name: Build
         run: mvn clean compile test
 
-      - name: Publish package
-        if: github.ref == 'refs/heads/main'
-        run: mvn --batch-mode deploy
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
