@@ -1,15 +1,22 @@
 = Maven Plugin for Hazelcast Cloud
-:description: This plugin is a tool for developing cluster-side modules for Hazelcast Serverless.
-:cloud-base-url: uat.hazelcast.cloud
+:description: The Maven plugin for Hazelcast Cloud is a Java development tool for testing and deploying cluster-side modules for Hazelcast Serverless.
+:page-plugin-version: 0.0.1
 :page-serverless: true
 
+// This page is used as both the project README and the documentation reference at docs.hazelcast.com/cloud/maven-plugin.
+// To display content that is relevant for GitHub and internal developers only in the README, we use the env-github attribute, which is available only in the context of GitHub. For example, only internal developers need to know about the apiBaseUrl configuration element.
+
+image:https://maven-badges.herokuapp.com/maven-central/com.hazelcast.cloud/hazelcast-cloud-maven-plugin/badge.svg[link="https://maven-badges.herokuapp.com/maven-central/com.hazelcast.cloud/hazelcast-cloud-maven-plugin"]
+
 ifndef::env-github[]
-This plugin is a tool for developing xref:cluster-side-modules.adoc[cluster-side modules] for Hazelcast Serverless.
+The Maven plugin for Hazelcast Cloud is a Java development tool for testing and deploying xref:cluster-side-modules.adoc[cluster-side modules] for Hazelcast Serverless.
 endif::[]
 
 ifdef::env-github[]
-{description}
+The Maven plugin for Hazelcast Cloud is a Java development tool for testing and deploying link:https://docs.hazelcast.com/cloud/cluster-side-modules[cluster-side modules] for Hazelcast Serverless.
 endif::[]
+
+The current version of the plugin is {page-plugin-version}.
 
 == Before you Begin
 
@@ -18,8 +25,9 @@ Make sure that you have the following:
 - link:https://maven.apache.org/install.html[Maven]
 - `JAVA_HOME` environment variable set to JDK 8, 9, or 11
 
-== Usage example
+== Usage Example
 
+ifndef::env-github[]
 [source,xml,subs="attributes+"]
 ----
 <pluginRepositories>
@@ -35,9 +43,37 @@ Make sure that you have the following:
         <plugin>
             <groupId>com.hazelcast.cloud</groupId>
             <artifactId>hazelcast-cloud-maven-plugin</artifactId>
-            <version>0.4-SNAPSHOT</version>
+            <version>{plugin-version}</version>
             <configuration>
-                <apiBaseUrl>https://{cloud-base-url}</apiBaseUrl>
+                <clusterName>$\{clusterName}</clusterName>
+                <apiKey>$\{apiKey}</apiKey>
+                <apiSecret>$\{apiSecret}</apiSecret>
+            </configuration>
+        </plugin>
+    </plugins>
+</build>
+----
+endif::[]
+
+ifdef::env-github[]
+[source,xml,subs="attributes+"]
+----
+<pluginRepositories>
+    <pluginRepository>
+        <id>github</id>
+        <name>Hazelcast Maven Packages</name>
+        <url>https://maven.pkg.github.com/hazelcast/hazelcast-cloud-maven-plugin</url>
+    </pluginRepository>
+</pluginRepositories>
+
+<build>
+    <plugins>
+        <plugin>
+            <groupId>com.hazelcast.cloud</groupId>
+            <artifactId>hazelcast-cloud-maven-plugin</artifactId>
+            <version>{page-plugin-version}</version>
+            <configuration>
+                <apiBaseUrl>https://$\{apiBaseUrl}</apiBaseUrl>
                 <clusterName>de-1234</clusterName>
                 <apiKey>$\{apiKey}</apiKey>
                 <apiSecret>$\{apiSecret}</apiSecret>
@@ -46,18 +82,24 @@ Make sure that you have the following:
     </plugins>
 </build>
 ----
+endif::[]
 
 == Configuration
 
 [cols="1m,2a,1m"]
 |===
-| Parameter|Description| Example  
+| Parameter|Description| Example
 
+ifdef::env-github[]
 | apiBaseUrl
-| Cloud API base URL
+| Base URL of the Cloud API:
 
-Leave this empty if you are using production.
-|\https://{cloud-base-url}
+- *Development:* \https://dev.test.hazelcast.cloud
+- *UAT:* \https://uat.hazelcast.cloud
+- *Production:* Leave this element empty if you are using production.
+
+|\https://dev.test.hazelcast.cloud
+endif::[]
 
 | clusterName
 | Cluster name
@@ -68,29 +110,27 @@ Find your cluster name in the Hazelcast Cloud UI by clicking *Connect your Appli
 | apiKey
 | API key
 
-link:https://console-{cloud-base-url}/settings/developer[Generate an API key and secret] in the Hazelcast Cloud UI.
+link:https://cloud.hazelcast.com/settings/developer[Generate an API key and secret] in the Hazelcast Cloud UI.
 a|N/A
 
 | apiSecret
 | API secret
 
-link:https://console-{cloud-base-url}/settings/developer[Generate an API key and secret] in the Hazelcast Cloud UI.
+link:https://cloud.hazelcast.com/settings/developer[Generate an API key and secret] in the Hazelcast Cloud UI.
 a|N/A
 
 |===
 
 == Goals
 
-[cols="1m,2a"]
+[cols="1m,2a,1a"]
 |===
-| Goal | Description
+| Goal | Description | Example
 
 | deploy
-| Package the Java files into an executable JAR file and upload that file to the Hazelcast Serverless cluster
-|===
-
-== Execution Example
-
+| Package the Java files into an executable JAR file and upload that file to the Hazelcast Serverless cluster.
+|
 ```shell
 mvn clean package hazelcast-cloud:deploy
 ```
+|===
