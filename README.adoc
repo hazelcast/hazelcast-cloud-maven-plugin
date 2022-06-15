@@ -6,13 +6,13 @@
 // This page is used as both the project README and the documentation reference at docs.hazelcast.com/cloud/maven-plugin.
 // To display content that is relevant for GitHub and internal developers only in the README, we use the env-github attribute, which is available only in the context of GitHub. For example, only internal developers need to know about the apiBaseUrl configuration element.
 
-image:https://maven-badges.herokuapp.com/maven-central/com.hazelcast.cloud/hazelcast-cloud-maven-plugin/badge.svg[link="https://maven-badges.herokuapp.com/maven-central/com.hazelcast.cloud/hazelcast-cloud-maven-plugin"]
-
 ifndef::env-github[]
 The Maven plugin for Hazelcast Cloud is a Java development tool for testing and deploying xref:cluster-side-modules.adoc[cluster-side modules] for Hazelcast Serverless.
 endif::[]
 
 ifdef::env-github[]
+image:https://maven-badges.herokuapp.com/maven-central/com.hazelcast.cloud/hazelcast-cloud-maven-plugin/badge.svg[link="https://maven-badges.herokuapp.com/maven-central/com.hazelcast.cloud/hazelcast-cloud-maven-plugin"]
+
 The Maven plugin for Hazelcast Cloud is a Java development tool for testing and deploying link:https://docs.hazelcast.com/cloud/cluster-side-modules[cluster-side modules] for Hazelcast Serverless.
 endif::[]
 
@@ -43,7 +43,7 @@ ifndef::env-github[]
         <plugin>
             <groupId>com.hazelcast.cloud</groupId>
             <artifactId>hazelcast-cloud-maven-plugin</artifactId>
-            <version>{plugin-version}</version>
+            <version>{page-plugin-version}</version>
             <configuration>
                 <clusterName>$\{clusterName}</clusterName>
                 <apiKey>$\{apiKey}</apiKey>
