@@ -25,7 +25,6 @@
 
 | Parameter  | Description                                                           |
 |-------------|--------------------------------------------------------------------------------|
-| apiBaseUrl  | API base URL (optional, default: https://coordinator.hazelcast.cloud) |
 | clusterName | Cluster name (example: de-1234)                                                            |
 | apiKey | API key*                                                              |
 | apiSecret| API secret*                                                           |
