@@ -2,7 +2,7 @@ package com.hazelcast.cloud.maven;
 
 import java.util.function.Supplier;
 
-import lombok.Data;
+import lombok.Setter;
 import lombok.var;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -20,10 +20,10 @@ import static java.lang.System.currentTimeMillis;
 import static org.codehaus.plexus.util.StringUtils.isEmpty;
 
 @Mojo(name = "deploy", defaultPhase = LifecyclePhase.DEPLOY)
-@Data
+@Setter
 public class DeployHandler extends AbstractMojo {
 
-    @Parameter(property = "apiBaseUrl", required = true)
+    @Parameter(property = "apiBaseUrl", defaultValue = "https://coordinator.hazelcast.cloud")
     private String apiBaseUrl;
 
     @Parameter(property = "clusterName", required = true)
