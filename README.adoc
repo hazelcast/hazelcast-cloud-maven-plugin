@@ -1,6 +1,6 @@
 = Hazelcast Viridian Maven Plugin
 :description: The Hazelcast Viridian Maven Plugin is a Java development tool for testing and deploying cluster-side modules on Serverless clusters.
-:page-plugin-version: 0.4-SNAPSHOT
+:page-plugin-version: 0.0.1
 :page-serverless: true
 
 // This page is used as both the project README and the documentation reference at docs.hazelcast.com/cloud/maven-plugin.
@@ -30,14 +30,6 @@ Make sure that you have the following:
 ifndef::env-github[]
 [source,xml,subs="attributes+"]
 ----
-<pluginRepositories>
-    <pluginRepository>
-        <id>github</id>
-        <name>Hazelcast Maven Packages</name>
-        <url>https://maven.pkg.github.com/hazelcast/hazelcast-cloud-maven-plugin</url>
-    </pluginRepository>
-</pluginRepositories>
-
 <build>
     <plugins>
         <plugin>
@@ -58,14 +50,6 @@ endif::[]
 ifdef::env-github[]
 [source,xml,subs="attributes+"]
 ----
-<pluginRepositories>
-    <pluginRepository>
-        <id>github</id>
-        <name>Hazelcast Maven Packages</name>
-        <url>https://maven.pkg.github.com/hazelcast/hazelcast-cloud-maven-plugin</url>
-    </pluginRepository>
-</pluginRepositories>
-
 <build>
     <plugins>
         <plugin>
