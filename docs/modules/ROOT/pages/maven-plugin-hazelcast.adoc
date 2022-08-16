@@ -1,12 +1,9 @@
 = Hazelcast Viridian Maven Plugin
-:description: The Hazelcast Viridian Maven Plugin is a Java development tool for testing and deploying link:https://docs.hazelcast.com/cloud/cluster-side-modules[cluster-side modules] on Serverless clusters.
+:description: The Hazelcast Viridian Maven Plugin is a Java development tool for testing and deploying xref:cluster-side-modules.adoc[cluster-side modules] on Serverless clusters.
 :page-plugin-version: 0.0.1
-
-image:https://maven-badges.herokuapp.com/maven-central/com.hazelcast.cloud/hazelcast-cloud-maven-plugin/badge.svg[link="https://maven-badges.herokuapp.com/maven-central/com.hazelcast.cloud/hazelcast-cloud-maven-plugin"]
+:page-serverless: true
 
 {description}
-
-The current version of the plugin is {page-plugin-version}.
 
 == Before you Begin
 
@@ -52,13 +49,13 @@ Make sure that you have the following:
 | clusterName
 | Cluster name
 
-Find your cluster name in the link:https://cloud.hazelcast.com[Hazelcast Viridian console] by clicking *Connect Your Application*.
+Find your cluster name in the link:{page-cloud-console}[{hazelcast-cloud} console] by clicking *Connect Your Application*.
 | pr-1234
 
 | apiKey
 | API key
 
-Generate an API key and secret in the link:https://cloud.hazelcast.com/settings/developer[Hazelcast Viridian console].
+Generate an API key and secret in the link:{page-cloud-console}settings/developer[{hazelcast-cloud} console].
 a|N/A
 
 | apiSecret
@@ -78,6 +75,13 @@ a|N/A
 |
 ```bash
 mvn clean package hazelcast-cloud:deploy
+```
+
+|stream
+|Stream the latest 1,000 lines of logs from a single member in the connected Serverless cluster.
+|
+```bash
+mvn hazelcast-cloud:stream
 ```
 
 |===
