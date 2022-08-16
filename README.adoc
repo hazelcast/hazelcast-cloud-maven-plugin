@@ -19,14 +19,6 @@ Make sure that you have the following:
 
 [source,xml,subs="attributes+"]
 ----
-<pluginRepositories>
-    <pluginRepository>
-        <id>github</id>
-        <name>Hazelcast Maven Packages</name>
-        <url>https://maven.pkg.github.com/hazelcast/hazelcast-cloud-maven-plugin</url>
-    </pluginRepository>
-</pluginRepositories>
-
 <build>
     <plugins>
         <plugin>
