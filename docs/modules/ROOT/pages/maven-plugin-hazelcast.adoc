@@ -1,5 +1,5 @@
-= Hazelcast Viridian Maven Plugin
-:description: The Hazelcast Viridian Maven Plugin is a Java development tool for testing and deploying xref:cluster-side-modules.adoc[cluster-side modules] on Serverless clusters.
+= Hazelcast {hazelcast-cloud} Maven Plugin
+:description: This Maven Plugin is a Java development tool for testing and deploying xref:cluster-side-modules.adoc[cluster-side modules] on {hazelcast-cloud} Serverless clusters.
 :page-plugin-version: 0.0.1
 :page-serverless: true
 
@@ -41,13 +41,13 @@ Make sure that you have the following:
 | clusterName
 | Cluster name
 
-Find your cluster name in the link:{page-cloud-console}[{hazelcast-cloud} console] by clicking *Connect Your Application*.
+Find your cluster name in the link:{page-cloud-console}[Hazelcast {hazelcast-cloud} console] by clicking *Connect Your Application*.
 | pr-1234
 
 | apiKey
 | API key
 
-Generate an API key and secret in the link:{page-cloud-console}settings/developer[{hazelcast-cloud} console].
+Generate an API key and secret in the link:{page-cloud-console}settings/developer[Hazelcast {hazelcast-cloud} console].
 a|N/A
 
 | apiSecret
@@ -63,14 +63,14 @@ a|N/A
 | Goal | Description | Example
 
 | deploy
-| Package your Maven project into an executable JAR file and upload that file to the connected Serverless cluster.
+| Package your Maven project into an executable JAR file and upload that file to the connected cluster.
 |
 ```bash
 mvn clean package hazelcast-cloud:deploy
 ```
 
 |stream
-|Stream the latest 1,000 lines of logs from a single member in the connected Serverless cluster.
+|Stream the latest 1,000 lines of logs from a single member in the connected cluster.
 |
 ```bash
 mvn hazelcast-cloud:stream
