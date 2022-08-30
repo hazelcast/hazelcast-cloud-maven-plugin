@@ -1,9 +1,11 @@
 = Hazelcast {hazelcast-cloud} Maven Plugin
-:description: This Maven Plugin is a Java development tool for testing and deploying xref:cluster-side-modules.adoc[cluster-side modules] on {hazelcast-cloud} Serverless clusters.
+:description: This Maven plugin is a Java development tool for testing and deploying xref:cluster-side-modules.adoc[cluster-side modules].
 :page-plugin-version: 0.0.1
 :page-serverless: true
 
 {description}
+
+NOTE: This plugin is for {hazelcast-cloud} Serverless clusters only.
 
 == Before you Begin
 
@@ -23,6 +25,7 @@ Make sure that you have the following:
             <artifactId>hazelcast-cloud-maven-plugin</artifactId>
             <version>{page-plugin-version}</version>
             <configuration>
+                <apiBaseUrl>https://api.viridian.hazelcast.cloud</apiBaseUrl>
                 <clusterName>$\{clusterName}</clusterName>
                 <apiKey>$\{apiKey}</apiKey>
                 <apiSecret>$\{apiSecret}</apiSecret>
