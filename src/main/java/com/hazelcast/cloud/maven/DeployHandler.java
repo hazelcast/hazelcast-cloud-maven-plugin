@@ -13,9 +13,12 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.springframework.retry.support.RetryTemplateBuilder;
 
+import com.hazelcast.cloud.maven.auth.ApiAuthenticator;
 import com.hazelcast.cloud.maven.client.HazelcastCloudClient;
+import com.hazelcast.cloud.maven.cluster.ClusterIdExtractor;
 import com.hazelcast.cloud.maven.exception.ClusterFailureException;
 
+import static com.hazelcast.cloud.maven.validation.Errors.propertyMissingError;
 import static java.lang.System.currentTimeMillis;
 import static org.codehaus.plexus.util.StringUtils.isEmpty;
 
@@ -39,14 +42,14 @@ public class DeployHandler extends AbstractMojo {
     private MavenProject project;
 
     private Supplier<HazelcastCloudClient> hazelcastCloudClientSupplier =
-        () -> new HazelcastCloudClient(apiBaseUrl, apiKey, apiSecret);
+        () -> new HazelcastCloudClient(apiBaseUrl, ApiAuthenticator.getToken(apiBaseUrl, apiKey, apiSecret));
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
-        var startTime = currentTimeMillis();
+        long startTime = currentTimeMillis();
 
         validateParams();
-        var clusterId = extractClusterId(clusterName);
+        var clusterId = ClusterIdExtractor.extractClusterId(clusterName);
 
         var hazelcastCloudClient = hazelcastCloudClientSupplier.get();
         var jar = project.getArtifact().getFile();
@@ -91,14 +94,6 @@ public class DeployHandler extends AbstractMojo {
         }
     }
 
-    public String extractClusterId(String clusterName) throws MojoExecutionException {
-        if (!clusterName.matches("[a-z]{2}-\\d+")) {
-            throw new MojoExecutionException("Invalid clusterName (example: de-1234)");
-        }
-
-        return clusterName.split("-")[1];
-    }
-
     public void validateParams() throws MojoExecutionException {
         if (isEmpty(apiBaseUrl)) {
             propertyMissingError("apiBaseUrl");
@@ -118,8 +113,4 @@ public class DeployHandler extends AbstractMojo {
         }
     }
 
-    private void propertyMissingError(String propertyName) throws MojoExecutionException {
-        throw new MojoExecutionException(
-            String.format("Configuration property '%s' is missing or empty", propertyName));
-    }
 }

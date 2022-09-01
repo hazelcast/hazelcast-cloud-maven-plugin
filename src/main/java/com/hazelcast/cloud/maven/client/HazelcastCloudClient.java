@@ -1,62 +1,67 @@
 package com.hazelcast.cloud.maven.client;
 
 import java.io.File;
+import java.time.Duration;
 import java.util.HashMap;
-import java.util.Map;
 
 import lombok.var;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.client.reactive.ReactorClientHttpConnector;
+import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
+import reactor.netty.http.client.HttpClient;
 
 import com.hazelcast.cloud.maven.model.Cluster;
-import com.hazelcast.cloud.maven.model.CustomerApiLogin;
-import com.hazelcast.cloud.maven.model.CustomerTokenResponse;
 
+import static com.hazelcast.cloud.maven.auth.AuthUtils.headersWithAuth;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA;
 
 public class HazelcastCloudClient {
+
     private final String apiBaseUrl;
 
     private final String token;
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    public HazelcastCloudClient(String apiBaseUrl, String apiKey, String apiSecret) {
+    public HazelcastCloudClient(String apiBaseUrl, String token) {
         this.apiBaseUrl = apiBaseUrl;
-        this.token = login(apiKey, apiSecret);
-    }
-
-    private String url(String uri) {
-        return this.apiBaseUrl + uri;
-    }
-
-    private String login(String apiKey, String apiSecret) {
-        var customerApiLogin = CustomerApiLogin.builder()
-            .apiKey(apiKey)
-            .apiSecret(apiSecret)
-            .build();
-
-        return restTemplate
-            .postForObject(url("/customers/api/login"), customerApiLogin, CustomerTokenResponse.class)
-            .getToken();
+        this.token = token;
     }
 
     public Cluster getClusterStatus(String clusterId) {
         return restTemplate.exchange(
             url("/cluster/{clusterId}"),
             HttpMethod.GET,
-            new HttpEntity<>(headersWithAuth()),
+            new HttpEntity<>(headersWithAuth(token)),
             Cluster.class,
             clusterId).getBody();
     }
 
+    public Flux<ServerSentEvent<String>> getClusterLogs(String clusterId) {
+        return WebClient.builder()
+            .clientConnector(new ReactorClientHttpConnector(
+                HttpClient
+                    .create()
+                    .responseTimeout(Duration.ofMinutes(5))))
+            .baseUrl(String.format("%s/cluster/%s/logstream", apiBaseUrl, clusterId))
+            .build().get()
+            .header(AUTHORIZATION, "Bearer " + token)
+            .retrieve()
+            .bodyToFlux(new ParameterizedTypeReference<ServerSentEvent<String>>() {
+
+            });
+    }
+
     public void uploadCustomClasses(String clusterId, File file) {
-        var headers = headersWithAuth();
+        var headers = headersWithAuth(token);
         headers.setContentType(MULTIPART_FORM_DATA);
 
         var body = new LinkedMultiValueMap<String, Object>();
@@ -72,9 +77,8 @@ public class HazelcastCloudClient {
             pathParams);
     }
 
-    private HttpHeaders headersWithAuth() {
-        var headers = new HttpHeaders();
-        headers.add(AUTHORIZATION, "Bearer " + token);
-        return headers;
+    private String url(String uri) {
+        return this.apiBaseUrl + uri;
     }
+
 }
