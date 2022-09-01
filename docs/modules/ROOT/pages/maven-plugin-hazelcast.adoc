@@ -1,6 +1,6 @@
 = Hazelcast {hazelcast-cloud} Maven Plugin
 :description: This Maven plugin is a Java development tool for testing and deploying xref:cluster-side-modules.adoc[cluster-side modules].
-:page-plugin-version: 0.0.1
+:page-plugin-version: 0.0.2
 :page-serverless: true
 
 {description}
@@ -44,7 +44,7 @@ Make sure that you have the following:
 | clusterName
 | Cluster name
 
-Find your cluster name in the link:{page-cloud-console}[Hazelcast {hazelcast-cloud} console] by clicking *Connect Your Application*.
+Find your cluster name in the link:{page-cloud-console}[Hazelcast {hazelcast-cloud} console] by clicking *Connect Client*.
 | pr-1234
 
 | apiKey
@@ -72,11 +72,11 @@ a|N/A
 mvn clean package hazelcast-cloud:deploy
 ```
 
-|stream
+|stream-logs
 |Stream the latest 1,000 lines of logs from a single member in the connected cluster.
 |
 ```bash
-mvn hazelcast-cloud:stream
+mvn hazelcast-cloud:stream-logs
 ```
 
 |===
