@@ -1,0 +1,85 @@
+= Hazelcast Viridian Maven Plugin
+:page-plugin-version: 0.0.2
+:page-cloud-console: https://viridian.hazelcast.cloud
+
+image:https://maven-badges.herokuapp.com/maven-central/com.hazelcast.cloud/hazelcast-cloud-maven-plugin/badge.svg[link="https://maven-badges.herokuapp.com/maven-central/com.hazelcast.cloud/hazelcast-cloud-maven-plugin"]
+
+The Hazelcast Viridian Maven Plugin is a Java development tool for testing and deploying cluster-side modules on Serverless clusters.
+
+The current version of the plugin is {page-plugin-version}.
+
+== Before you Begin
+
+Make sure that you have the following:
+
+- link:https://maven.apache.org/install.html[Maven]
+- The `JAVA_HOME` environment variable set to the path of JDK 8, 9, or 11
+
+== Usage Example
+
+[source,xml,subs="attributes+"]
+----
+<build>
+    <plugins>
+        <plugin>
+            <groupId>com.hazelcast.cloud</groupId>
+            <artifactId>hazelcast-cloud-maven-plugin</artifactId>
+            <version>{page-plugin-version}</version>
+            <configuration>
+                <apiBaseUrl>https://api.viridian.hazelcast.cloud</apiBaseUrl>
+                <clusterName>$\{clusterName}</clusterName>
+                <apiKey>$\{apiKey}</apiKey>
+                <apiSecret>$\{apiSecret}</apiSecret>
+            </configuration>
+        </plugin>
+    </plugins>
+</build>
+----
+
+== Configuration
+
+[cols="1m,2a,1m"]
+|===
+| Parameter|Description| Example
+
+| clusterName
+| Cluster name
+
+Find your cluster name in the link:{page-cloud-console}[Hazelcast Viridian console] by clicking *Connect Client*.
+| pr-1234
+
+| apiKey
+| API key
+
+Generate an API key and secret in the link:{page-cloud-console}/settings/developer[Hazelcast Viridian console].
+a|N/A
+
+| apiSecret
+| API secret
+a|N/A
+
+|===
+
+== Goals
+
+[cols="1m,2a,1a"]
+|===
+| Goal | Description | Example
+
+| deploy
+| Package your Maven project into an executable JAR file and upload that file to the connected Serverless cluster.
+|
+[source,bash]
+----
+mvn clean package hazelcast-cloud:deploy
+----
+
+|stream-logs
+|Stream the latest 1,000 lines of logs from a single member in the connected cluster.
+|
+[source,bash]
+----
+mvn hazelcast-cloud:stream-logs
+----
+
+|===

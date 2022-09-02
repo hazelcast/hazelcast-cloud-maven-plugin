@@ -50,9 +50,9 @@ public class DeployHandlerTest {
     private static Stream<Arguments> should_fail_given_invalid_params() {
         return Stream.of(
             Arguments.of(null, "de-1234", "api-key", "api-secret"),
-            Arguments.of("https://coordinator.hazelcast.cloud", null, "api-key", "api-key"),
-            Arguments.of("https://coordinator.hazelcast.cloud", "de-1234", null, "api-secret"),
-            Arguments.of("https://coordinator.hazelcast.cloud", "de-1234", "api-key", null)
+            Arguments.of("https://api.viridian.hazelcast.cloud", null, "api-key", "api-key"),
+            Arguments.of("https://api.viridian.hazelcast.cloud", "de-1234", null, "api-secret"),
+            Arguments.of("https://api.viridian.hazelcast.cloud", "de-1234", "api-key", null)
         );
     }
 
