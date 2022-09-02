@@ -6,7 +6,6 @@ import java.util.stream.Stream;
 
 import lombok.var;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -51,9 +50,9 @@ public class LogHandlerTest {
     private static Stream<Arguments> should_fail_given_invalid_params() {
         return Stream.of(
             Arguments.of(null, "de-1234", "api-key", "api-secret"),
-            Arguments.of("https://coordinator.hazelcast.cloud", null, "api-key", "api-key"),
-            Arguments.of("https://coordinator.hazelcast.cloud", "de-1234", null, "api-secret"),
-            Arguments.of("https://coordinator.hazelcast.cloud", "de-1234", "api-key", null)
+            Arguments.of("https://api.viridian.hazelcast.cloud", null, "api-key", "api-key"),
+            Arguments.of("https://api.viridian.hazelcast.cloud", "de-1234", null, "api-secret"),
+            Arguments.of("https://api.viridian.hazelcast.cloud", "de-1234", "api-key", null)
         );
     }
 
@@ -71,7 +70,7 @@ public class LogHandlerTest {
     }
 
     @Test
-    public void should_stream_cluster_logs() throws MojoExecutionException, MojoFailureException {
+    public void should_stream_cluster_logs() throws MojoExecutionException {
         // given
         var handler = logsHandler();
         var hazelcastClient = mock(HazelcastCloudClient.class);
