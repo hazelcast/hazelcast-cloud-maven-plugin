@@ -1,0 +1,43 @@
+name: Maven Central Release
+on:
+  workflow_dispatch:
+    inputs:
+      release-version:
+        description: 'Version to be released (e.g. 1.3.0)'
+        required: true
+      next-snapshot-version:
+        description: 'Version to be set after the release (e.g. 1.4.0-SNAPSHOT)'
+        required: true
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Java 8
+        uses: actions/setup-java@v2
+        with:
+          java-version: '8'
+          distribution: 'adopt'
+          architecture: 'x64'
+          cache: 'maven'
+          server-id: ossrh
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
+          gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
+          gpg-passphrase: MAVEN_GPG_PASSPHRASE
+
+      - name: Release
+        run: |
+          mvn release:clean release:prepare \
+            -DskipTests
+            -DdryRun=true \
+            -Dtag=v${{ github.event.inputs.release-version }} \
+            -DreleaseVersion=${{ github.event.inputs.release-version }}
+            -DdevelopmentVersion=${{ github.event.inputs.next-snapshot-version }}
+        env:
+          MAVEN_USERNAME: ${{ secrets.SONATYPE_OSS_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.SONATYPE_OSS_PASSWORD }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
