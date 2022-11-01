@@ -6,8 +6,6 @@ image:https://maven-badges.herokuapp.com/maven-central/com.hazelcast.cloud/hazel
 
 The Hazelcast Viridian Maven Plugin is a Java development tool for testing and deploying cluster-side modules on Serverless clusters.
 
-The current version of the plugin is {page-plugin-version}.
-
 == Before you Begin
 
 Make sure that you have the following:
