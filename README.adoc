@@ -1,6 +1,6 @@
 = Hazelcast Viridian Maven Plugin
 :page-plugin-version: 0.0.2
-:page-cloud-console: https://viridian.hazelcast.cloud
+:page-cloud-console: https://viridian.hazelcast.com
 
 image:https://maven-badges.herokuapp.com/maven-central/com.hazelcast.cloud/hazelcast-cloud-maven-plugin/badge.svg[link="https://maven-badges.herokuapp.com/maven-central/com.hazelcast.cloud/hazelcast-cloud-maven-plugin"]
 
@@ -24,7 +24,7 @@ Make sure that you have the following:
             <artifactId>hazelcast-cloud-maven-plugin</artifactId>
             <version>{page-plugin-version}</version>
             <configuration>
-                <apiBaseUrl>https://api.viridian.hazelcast.cloud</apiBaseUrl>
+                <apiBaseUrl>https://api.viridian.hazelcast.com</apiBaseUrl>
                 <clusterName>$\{clusterName}</clusterName>
                 <apiKey>$\{apiKey}</apiKey>
                 <apiSecret>$\{apiSecret}</apiSecret>

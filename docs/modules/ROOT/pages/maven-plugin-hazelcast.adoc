@@ -25,7 +25,7 @@ Make sure that you have the following:
             <artifactId>hazelcast-cloud-maven-plugin</artifactId>
             <version>{page-plugin-version}</version>
             <configuration>
-                <apiBaseUrl>https://api.viridian.hazelcast.cloud</apiBaseUrl>
+                <apiBaseUrl>https://api.viridian.hazelcast.com</apiBaseUrl>
                 <clusterName>$\{clusterName}</clusterName>
                 <apiKey>$\{apiKey}</apiKey>
                 <apiSecret>$\{apiSecret}</apiSecret>
