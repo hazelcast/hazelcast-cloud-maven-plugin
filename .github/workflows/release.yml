@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
     inputs:
       release-version:
-        description: 'Version to be released (e.g. 1.3.0)'
+        description: 'Version to be released (e.g. 1.3.0). Approve release manually on https://oss.sonatype.org/#stagingRepositories'
         required: true
       next-snapshot-version:
         description: 'Version to be set after the release (e.g. 1.4.0-SNAPSHOT)'
@@ -39,7 +39,7 @@ jobs:
 
       - name: Release
         run: |
-          mvn release:clean release:prepare release:perform \
+          mvn -B -Prelease release:clean release:prepare release:perform \
             -Dtag=v${{ github.event.inputs.release-version }} \
             -DreleaseVersion=${{ github.event.inputs.release-version }} \
             -DdevelopmentVersion=${{ github.event.inputs.next-snapshot-version }}
