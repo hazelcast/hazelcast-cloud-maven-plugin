@@ -61,7 +61,7 @@ public class DeployHandler extends AbstractMojo {
 
         try {
             new RetryTemplateBuilder()
-                .withinMillis(120_000)
+                .withinMillis(300_000)
                 .fixedBackoff(1000)
                 .retryOn(IllegalStateException.class)
                 .build()
