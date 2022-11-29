@@ -19,8 +19,8 @@ import reactor.core.publisher.Flux;
 
 import com.hazelcast.cloud.maven.auth.ApiAuthenticator;
 import com.hazelcast.cloud.maven.client.HazelcastCloudClient;
-import com.hazelcast.cloud.maven.cluster.ClusterIdExtractor;
 
+import static com.hazelcast.cloud.maven.cluster.ClusterIdExtractor.extractClusterId;
 import static com.hazelcast.cloud.maven.validation.Errors.propertyMissingError;
 import static org.codehaus.plexus.util.StringUtils.isEmpty;
 
@@ -49,7 +49,7 @@ public class LogsHandler extends AbstractMojo {
     public void execute() throws MojoExecutionException {
         validateParams();
 
-        var clusterId = ClusterIdExtractor.extractClusterId(clusterName);
+        var clusterId = extractClusterId(clusterName);
 
         hazelcastCloudClientSupplier.get().getClusterLogs(clusterId)
             .flatMap(toStructuredLog())

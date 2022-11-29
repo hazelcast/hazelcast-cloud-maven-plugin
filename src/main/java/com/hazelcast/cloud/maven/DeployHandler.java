@@ -15,9 +15,9 @@ import org.springframework.retry.support.RetryTemplateBuilder;
 
 import com.hazelcast.cloud.maven.auth.ApiAuthenticator;
 import com.hazelcast.cloud.maven.client.HazelcastCloudClient;
-import com.hazelcast.cloud.maven.cluster.ClusterIdExtractor;
 import com.hazelcast.cloud.maven.exception.ClusterFailureException;
 
+import static com.hazelcast.cloud.maven.cluster.ClusterIdExtractor.extractClusterId;
 import static com.hazelcast.cloud.maven.validation.Errors.propertyMissingError;
 import static java.lang.System.currentTimeMillis;
 import static org.codehaus.plexus.util.StringUtils.isEmpty;
@@ -49,7 +49,7 @@ public class DeployHandler extends AbstractMojo {
         long startTime = currentTimeMillis();
 
         validateParams();
-        var clusterId = ClusterIdExtractor.extractClusterId(clusterName);
+        var clusterId = extractClusterId(clusterName);
 
         var hazelcastCloudClient = hazelcastCloudClientSupplier.get();
         var jar = project.getArtifact().getFile();

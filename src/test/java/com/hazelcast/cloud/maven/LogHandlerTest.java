@@ -49,10 +49,10 @@ public class LogHandlerTest {
 
     private static Stream<Arguments> should_fail_given_invalid_params() {
         return Stream.of(
-            Arguments.of(null, "de-1234", "api-key", "api-secret"),
+            Arguments.of(null, "pr-a1b2c3d4", "api-key", "api-secret"),
             Arguments.of("https://api.viridian.hazelcast.com", null, "api-key", "api-key"),
-            Arguments.of("https://api.viridian.hazelcast.com", "de-1234", null, "api-secret"),
-            Arguments.of("https://api.viridian.hazelcast.com", "de-1234", "api-key", null)
+            Arguments.of("https://api.viridian.hazelcast.com", "pr-a1b2c3d4", null, "api-secret"),
+            Arguments.of("https://api.viridian.hazelcast.com", "pr-a1b2c3d4", "api-key", null)
         );
     }
 
@@ -60,13 +60,13 @@ public class LogHandlerTest {
     public void should_fail_given_invalid_cluster_name() {
         // given
         var logsHandler = logsHandler();
-        logsHandler.setClusterName("1234");
+        logsHandler.setClusterName("a1b2c3d4");
 
         // when
         var exception = assertThrows(MojoExecutionException.class, logsHandler::execute);
 
         // then
-        then(exception.getMessage()).isEqualTo("Invalid clusterName (example: de-1234)");
+        then(exception.getMessage()).isEqualTo("Invalid clusterName (example: pr-a1b2c3d4)");
     }
 
     @Test
@@ -76,7 +76,7 @@ public class LogHandlerTest {
         var hazelcastClient = mock(HazelcastCloudClient.class);
         handler.setHazelcastCloudClientSupplier(() -> hazelcastClient);
 
-        given(hazelcastClient.getClusterLogs("1234")).willReturn(
+        given(hazelcastClient.getClusterLogs("a1b2c3d4")).willReturn(
             Flux.just(
                 ServerSentEvent.<String>builder().data("{\"time\":\"2022-09-01T15:50:08Z\","
                         + "\"logger\":\"com.hazelcast.instance.impl.Node\",\"level\":\"INFO\",\"msg\":\"[10.0.39"
@@ -114,7 +114,7 @@ public class LogHandlerTest {
     private LogsHandler logsHandler() {
         LogsHandler handler = new LogsHandler();
         handler.setApiBaseUrl("https://localhost");
-        handler.setClusterName("de-1234");
+        handler.setClusterName("pr-a1b2c3d4");
         handler.setApiKey("api-key");
         handler.setApiSecret("api-key");
 
