@@ -49,10 +49,10 @@ public class DeployHandlerTest {
 
     private static Stream<Arguments> should_fail_given_invalid_params() {
         return Stream.of(
-            Arguments.of(null, "de-1234", "api-key", "api-secret"),
+            Arguments.of(null, "pr-a1b2c3d4", "api-key", "api-secret"),
             Arguments.of("https://api.viridian.hazelcast.com", null, "api-key", "api-key"),
-            Arguments.of("https://api.viridian.hazelcast.com", "de-1234", null, "api-secret"),
-            Arguments.of("https://api.viridian.hazelcast.com", "de-1234", "api-key", null)
+            Arguments.of("https://api.viridian.hazelcast.com", "pr-a1b2c3d4", null, "api-secret"),
+            Arguments.of("https://api.viridian.hazelcast.com", "pr-a1b2c3d4", "api-key", null)
         );
     }
 
@@ -60,7 +60,7 @@ public class DeployHandlerTest {
     public void should_fail_given_invalid_cluster_name() {
         // given
         var deployHandler = deployHandler();
-        deployHandler.setClusterName("1234");
+        deployHandler.setClusterName("a1b2c3d4");
         var mavenProject = mockMavenProject();
         deployHandler.setProject(mavenProject);
 
@@ -68,7 +68,7 @@ public class DeployHandlerTest {
         var exception = assertThrows(MojoExecutionException.class, deployHandler::execute);
 
         // then
-        then(exception.getMessage()).isEqualTo("Invalid clusterName (example: de-1234)");
+        then(exception.getMessage()).isEqualTo("Invalid clusterName (example: pr-a1b2c3d4)");
     }
 
     @Test
@@ -97,7 +97,7 @@ public class DeployHandlerTest {
         var hazelcastClient = mock(HazelcastCloudClient.class);
         deployHandler.setHazelcastCloudClientSupplier(() -> hazelcastClient);
 
-        given(hazelcastClient.getClusterStatus("1234")).willReturn(
+        given(hazelcastClient.getClusterStatus("a1b2c3d4")).willReturn(
             Cluster.builder().state("PENDING").build(),
             Cluster.builder().state("RUNNING").build()
         );
@@ -106,7 +106,7 @@ public class DeployHandlerTest {
         deployHandler.execute();
 
         // then
-        verify(hazelcastClient).uploadCustomClasses("1234", mavenProject.getArtifact().getFile());
+        verify(hazelcastClient).uploadCustomClasses("a1b2c3d4", mavenProject.getArtifact().getFile());
     }
 
     @Test
@@ -117,7 +117,7 @@ public class DeployHandlerTest {
         deployHandler.setProject(mockMavenProject());
         deployHandler.setHazelcastCloudClientSupplier(() -> hazelcastClient);
 
-        given(hazelcastClient.getClusterStatus("1234")).willReturn(Cluster.builder().state("FAILED").build());
+        given(hazelcastClient.getClusterStatus("a1b2c3d4")).willReturn(Cluster.builder().state("FAILED").build());
 
         // when
         var exception = assertThrows(MojoFailureException.class, deployHandler::execute);
@@ -129,7 +129,7 @@ public class DeployHandlerTest {
     private DeployHandler deployHandler() {
         var deployHandler = new DeployHandler();
         deployHandler.setApiBaseUrl("https://localhost");
-        deployHandler.setClusterName("de-1234");
+        deployHandler.setClusterName("pr-a1b2c3d4");
         deployHandler.setApiKey("api-key");
         deployHandler.setApiSecret("api-key");
 
