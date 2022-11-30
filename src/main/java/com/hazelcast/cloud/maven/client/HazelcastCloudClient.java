@@ -48,15 +48,13 @@ public class HazelcastCloudClient {
     public Flux<ServerSentEvent<String>> getClusterLogs(String clusterId) {
         return WebClient.builder()
             .clientConnector(new ReactorClientHttpConnector(
-                HttpClient
-                    .create()
+                HttpClient.create()
                     .responseTimeout(Duration.ofMinutes(5))))
             .baseUrl(String.format("%s/cluster/%s/logstream", apiBaseUrl, clusterId))
             .build().get()
             .header(AUTHORIZATION, "Bearer " + token)
             .retrieve()
             .bodyToFlux(new ParameterizedTypeReference<ServerSentEvent<String>>() {
-
             });
     }
 
