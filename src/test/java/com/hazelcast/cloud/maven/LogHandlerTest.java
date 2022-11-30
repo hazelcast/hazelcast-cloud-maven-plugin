@@ -91,24 +91,27 @@ public class LogHandlerTest {
         );
 
         // when
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        PrintStream sysout = System.out;
+        var out = new ByteArrayOutputStream();
         System.setOut(new PrintStream(out));
         try {
             handler.execute();
         }
         finally {
-            System.setOut(sysout);
+            System.setOut(System.out);
         }
 
         // then
         assertThat(out.toString())
             .contains(
-                "2022-09-01T15:50:08Z com.hazelcast.instance.impl.Node INFO [10.0.39.78]:5701 [pr-307] [5.1.1] "
-                    + "Using Discovery SPI")
+                "{\"time\":\"2022-09-01T15:50:08Z\","
+                    + "\"logger\":\"com.hazelcast.instance.impl.Node\",\"level\":\"INFO\",\"msg\":\"[10.0.39"
+                    + ".78]:5701 [pr-307] [5.1.1] Using Discovery SPI \",\"clusterId\":\"307\","
+                    + "\"customerId\":\"105\"}")
             .contains(
-                "2022-09-01T15:50:08Z com.hazelcast.core.LifecycleService INFO [10.0.39.78]:5701 [pr-307] [5.1"
-                    + ".1] [10.0.39.78]:5701 is STARTING");
+                "{\"time\":\"2022-09-01T15:50:08Z\",\"logger\":\"com"
+                    + ".hazelcast.core.LifecycleService\",\"level\":\"INFO\",\"msg\":\"[10.0.39.78]:5701 "
+                    + "[pr-307] [5.1.1] [10.0.39.78]:5701 is STARTING \",\"clusterId\":\"307\","
+                    + "\"customerId\":\"105\"}");
     }
 
     private LogsHandler logsHandler() {
