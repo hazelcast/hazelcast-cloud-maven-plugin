@@ -4,7 +4,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.stream.Stream;
 
-import lombok.var;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -32,14 +31,14 @@ public class LogHandlerTest {
         String apiSecret
     ) {
         // given
-        var deployHandler = new LogsHandler();
+        LogsHandler deployHandler = new LogsHandler();
         deployHandler.setApiBaseUrl(apiBaseUrl);
         deployHandler.setClusterName(clusterName);
         deployHandler.setApiKey(apiKey);
         deployHandler.setApiSecret(apiSecret);
 
         // when
-        var exception = assertThrows(MojoExecutionException.class, deployHandler::execute);
+        Throwable exception = assertThrows(MojoExecutionException.class, deployHandler::execute);
 
         // then
         then(exception.getMessage())
@@ -59,11 +58,11 @@ public class LogHandlerTest {
     @Test
     public void should_fail_given_invalid_cluster_name() {
         // given
-        var logsHandler = logsHandler();
+        LogsHandler logsHandler = logsHandler();
         logsHandler.setClusterName("a1b2c3d4");
 
         // when
-        var exception = assertThrows(MojoExecutionException.class, logsHandler::execute);
+        Throwable exception = assertThrows(MojoExecutionException.class, logsHandler::execute);
 
         // then
         then(exception.getMessage()).isEqualTo("Invalid clusterName (example: pr-a1b2c3d4)");
@@ -72,8 +71,8 @@ public class LogHandlerTest {
     @Test
     public void should_stream_cluster_logs() throws MojoExecutionException {
         // given
-        var handler = logsHandler();
-        var hazelcastClient = mock(HazelcastCloudClient.class);
+        LogsHandler handler = logsHandler();
+        HazelcastCloudClient hazelcastClient = mock(HazelcastCloudClient.class);
         handler.setHazelcastCloudClientSupplier(() -> hazelcastClient);
 
         given(hazelcastClient.getClusterLogs("a1b2c3d4")).willReturn(
@@ -91,7 +90,7 @@ public class LogHandlerTest {
         );
 
         // when
-        var out = new ByteArrayOutputStream();
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
         System.setOut(new PrintStream(out));
         try {
             handler.execute();

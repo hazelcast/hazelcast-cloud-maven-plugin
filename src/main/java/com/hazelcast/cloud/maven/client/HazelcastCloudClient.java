@@ -3,11 +3,12 @@ package com.hazelcast.cloud.maven.client;
 import java.io.File;
 import java.time.Duration;
 import java.util.HashMap;
+import java.util.Map;
 
-import lombok.var;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.http.codec.ServerSentEvent;
@@ -59,13 +60,13 @@ public class HazelcastCloudClient {
     }
 
     public void uploadCustomClasses(String clusterId, File file) {
-        var headers = headersWithAuth(token);
+        HttpHeaders headers = headersWithAuth(token);
         headers.setContentType(MULTIPART_FORM_DATA);
 
-        var body = new LinkedMultiValueMap<String, Object>();
+        LinkedMultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
         body.add("customClassesFile", new FileSystemResource(file));
 
-        var pathParams = new HashMap<String, String>();
+        Map<String, String> pathParams = new HashMap<>();
         pathParams.put("clusterId", clusterId);
 
         restTemplate.postForEntity(

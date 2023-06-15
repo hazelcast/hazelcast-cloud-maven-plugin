@@ -1,9 +1,9 @@
 package com.hazelcast.cloud.maven;
 
+import java.io.File;
 import java.util.function.Supplier;
 
 import lombok.Setter;
-import lombok.var;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -49,10 +49,10 @@ public class DeployHandler extends AbstractMojo {
         long startTime = currentTimeMillis();
 
         validateParams();
-        var clusterId = extractClusterId(clusterName);
+        String clusterId = extractClusterId(clusterName);
 
-        var hazelcastCloudClient = hazelcastCloudClientSupplier.get();
-        var jar = project.getArtifact().getFile();
+        HazelcastCloudClient hazelcastCloudClient = hazelcastCloudClientSupplier.get();
+        File jar = project.getArtifact().getFile();
 
         getLog().info(String.format(
             "Artifact with custom classes %s is being uploaded to the Hazelcast cluster '%s'", jar, clusterName));
@@ -66,10 +66,10 @@ public class DeployHandler extends AbstractMojo {
                 .retryOn(IllegalStateException.class)
                 .build()
                 .execute(retryContext -> {
-                    var secs = (currentTimeMillis() - startTime) / 1000;
+                    long secs = (currentTimeMillis() - startTime) / 1000;
                     getLog().info(secs + "s");
 
-                    var state = hazelcastCloudClient.getClusterStatus(clusterId).state;
+                    String state = hazelcastCloudClient.getClusterStatus(clusterId).state;
                     switch (state) {
                         case "RUNNING":
                             return state;
@@ -85,7 +85,7 @@ public class DeployHandler extends AbstractMojo {
             getLog().info(String.format(
                 "Artifact with custom classes %s was uploaded and is ready to be used", jar.getName()));
 
-            var totalTimeSec = (currentTimeMillis() - startTime) / 1000f;
+            float totalTimeSec = (currentTimeMillis() - startTime) / 1000f;
             getLog().info(String.format("Artifact upload total time: %.3f s", totalTimeSec));
         }
         catch (IllegalStateException | ClusterFailureException exception) {
@@ -112,5 +112,4 @@ public class DeployHandler extends AbstractMojo {
                 "Project artifact (jar) is not packaged. Execute 'package' goal prior to 'deploy'.");
         }
     }
-
 }

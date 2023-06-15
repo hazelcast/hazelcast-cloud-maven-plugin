@@ -3,7 +3,6 @@ package com.hazelcast.cloud.maven;
 import java.util.function.Supplier;
 
 import lombok.Setter;
-import lombok.var;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -41,7 +40,7 @@ public class LogsHandler extends AbstractMojo {
     public void execute() throws MojoExecutionException {
         validateParams();
 
-        var clusterId = extractClusterId(clusterName);
+        String clusterId = extractClusterId(clusterName);
 
         hazelcastCloudClientSupplier.get().getClusterLogs(clusterId)
             .mapNotNull(ServerSentEvent::data)
