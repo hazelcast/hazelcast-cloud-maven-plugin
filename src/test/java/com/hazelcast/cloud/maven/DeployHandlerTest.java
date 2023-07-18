@@ -105,7 +105,7 @@ public class DeployHandlerTest {
         deployHandler.execute();
 
         // then
-        verify(hazelcastClient).uploadCustomClasses("a1b2c3d4", mavenProject.getArtifact().getFile());
+        verify(hazelcastClient).batchCustomClasses("a1b2c3d4", mavenProject.getArtifact().getFile());
     }
 
     @Test

@@ -57,7 +57,7 @@ public class DeployHandler extends AbstractMojo {
         getLog().info(String.format(
             "Artifact with custom classes %s is being uploaded to the Hazelcast cluster '%s'", jar, clusterName));
 
-        hazelcastCloudClient.uploadCustomClasses(clusterId, jar);
+        hazelcastCloudClient.batchCustomClasses(clusterId, jar);
 
         try {
             new RetryTemplateBuilder()
