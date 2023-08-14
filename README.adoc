@@ -4,7 +4,7 @@
 
 image:https://maven-badges.herokuapp.com/maven-central/com.hazelcast.cloud/hazelcast-cloud-maven-plugin/badge.svg[link="https://maven-badges.herokuapp.com/maven-central/com.hazelcast.cloud/hazelcast-cloud-maven-plugin"]
 
-The Hazelcast Viridian Maven Plugin is a Java development tool for testing and deploying cluster-side modules on Serverless clusters.
+The Viridian Cloud Maven Plugin is a Java development tool for testing and deploying cluster-side modules on Viridian Cloud Standard clusters.
 
 == Before you Begin
 
@@ -43,13 +43,13 @@ Make sure that you have the following:
 | clusterName
 | Cluster name
 
-Find your cluster name in the link:{page-cloud-console}[Hazelcast Viridian console] by clicking *Connect Client*.
+Find your cluster name in the link:{page-cloud-console}[Viridian Cloud console] by clicking *Connect Client*.
 | pr-a1b2c3d4
 
 | apiKey
 | API key
 
-Generate an API key and secret in the link:{page-cloud-console}/settings/developer[Hazelcast Viridian console].
+Generate an API key and secret in the link:{page-cloud-console}/settings/developer[Viridian Cloud console].
 a|N/A
 
 | apiSecret
