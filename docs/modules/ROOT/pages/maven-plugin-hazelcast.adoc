@@ -1,11 +1,10 @@
 = Hazelcast {hazelcast-cloud} Maven Plugin
 :description: This Maven plugin is a Java development tool for testing and deploying xref:cluster-side-modules.adoc[cluster-side modules].
 :page-plugin-version: 0.0.7
-:page-serverless: true
 
 {description}
 
-NOTE: This plugin is for {hazelcast-cloud} Serverless clusters only.
+NOTE: This plugin is for {hazelcast-cloud} Standard clusters only.
 
 == Before you Begin
 
@@ -44,13 +43,13 @@ Make sure that you have the following:
 | clusterName
 | Cluster name
 
-Find your cluster name in the link:{page-cloud-console}[Hazelcast {hazelcast-cloud} console] by clicking *Connect Client*.
+Find your cluster name in the link:{page-cloud-console}[{hazelcast-cloud} console] by clicking *Connect Client*.
 | pr-1234
 
 | apiKey
 | API key
 
-Generate an API key and secret in the link:{page-cloud-console}settings/developer[Hazelcast {hazelcast-cloud} console].
+Generate an API key and secret in the link:{page-cloud-console}settings/developer[{hazelcast-cloud} console].
 a|N/A
 
 | apiSecret
