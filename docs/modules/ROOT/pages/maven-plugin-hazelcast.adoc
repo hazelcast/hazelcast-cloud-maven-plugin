@@ -1,6 +1,6 @@
 = Hazelcast {hazelcast-cloud} Maven Plugin
 :description: This Maven plugin is a Java development tool for testing and deploying xref:cluster-side-modules.adoc[cluster-side modules].
-:page-plugin-version: 0.0.7
+:page-plugin-version: 0.1.0
 
 {description}
 
@@ -25,7 +25,7 @@ Make sure that you have the following:
             <version>{page-plugin-version}</version>
             <configuration>
                 <apiBaseUrl>https://api.viridian.hazelcast.com</apiBaseUrl>
-                <clusterName>$\{clusterName}</clusterName>
+                <clusterId>$\{clusterId}</clusterId>
                 <apiKey>$\{apiKey}</apiKey>
                 <apiSecret>$\{apiSecret}</apiSecret>
             </configuration>
@@ -40,11 +40,11 @@ Make sure that you have the following:
 |===
 | Parameter|Description| Example
 
-| clusterName
-| Cluster name
+| clusterId
+| Cluster ID
 
-Find your cluster name in the link:{page-cloud-console}[{hazelcast-cloud} console] by clicking *Connect Client*.
-| pr-1234
+Find your cluster id in the link:{page-cloud-console}[{hazelcast-cloud} console].
+| a1b2c3d4
 
 | apiKey
 | API key

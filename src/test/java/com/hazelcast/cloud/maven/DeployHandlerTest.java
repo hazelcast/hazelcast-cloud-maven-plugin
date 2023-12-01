@@ -26,14 +26,14 @@ public class DeployHandlerTest {
     @MethodSource
     public void should_fail_given_invalid_params(
         String apiBaseUrl,
-        String clusterName,
+        String clusterId,
         String apiKey,
         String apiSecret
     ) {
         // given
         DeployHandler deployHandler = new DeployHandler();
         deployHandler.setApiBaseUrl(apiBaseUrl);
-        deployHandler.setClusterName(clusterName);
+        deployHandler.setClusterId(clusterId);
         deployHandler.setApiKey(apiKey);
         deployHandler.setApiSecret(apiSecret);
 
@@ -48,26 +48,11 @@ public class DeployHandlerTest {
 
     private static Stream<Arguments> should_fail_given_invalid_params() {
         return Stream.of(
-            Arguments.of(null, "pr-a1b2c3d4", "api-key", "api-secret"),
+            Arguments.of(null, "a1b2c3d4", "api-key", "api-secret"),
             Arguments.of("https://api.viridian.hazelcast.com", null, "api-key", "api-key"),
-            Arguments.of("https://api.viridian.hazelcast.com", "pr-a1b2c3d4", null, "api-secret"),
-            Arguments.of("https://api.viridian.hazelcast.com", "pr-a1b2c3d4", "api-key", null)
+            Arguments.of("https://api.viridian.hazelcast.com", "a1b2c3d4", null, "api-secret"),
+            Arguments.of("https://api.viridian.hazelcast.com", "a1b2c3d4", "api-key", null)
         );
-    }
-
-    @Test
-    public void should_fail_given_invalid_cluster_name() {
-        // given
-        DeployHandler deployHandler = deployHandler();
-        deployHandler.setClusterName("a1b2c3d4");
-        MavenProject mavenProject = mockMavenProject();
-        deployHandler.setProject(mavenProject);
-
-        // when
-        Throwable exception = assertThrows(MojoExecutionException.class, deployHandler::execute);
-
-        // then
-        then(exception.getMessage()).isEqualTo("Invalid clusterName (example: pr-a1b2c3d4)");
     }
 
     @Test
@@ -128,7 +113,7 @@ public class DeployHandlerTest {
     private DeployHandler deployHandler() {
         DeployHandler deployHandler = new DeployHandler();
         deployHandler.setApiBaseUrl("https://localhost");
-        deployHandler.setClusterName("pr-a1b2c3d4");
+        deployHandler.setClusterId("a1b2c3d4");
         deployHandler.setApiKey("api-key");
         deployHandler.setApiSecret("api-key");
 
