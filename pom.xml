@@ -5,7 +5,7 @@
     <groupId>com.hazelcast.cloud</groupId>
     <artifactId>hazelcast-cloud-maven-plugin</artifactId>
     <packaging>maven-plugin</packaging>
-    <version>0.1.3-SNAPSHOT</version>
+    <version>0.2.0-SNAPSHOT</version>
 
     <name>Hazelcast Cloud Maven Plugin</name>
     <description>Maven plugin for the operations with Hazelcast Cloud</description>
@@ -54,8 +54,7 @@
     </distributionManagement>
 
     <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <java.version>11</java.version>
         <maven.plugin.core.version>3.9.6</maven.plugin.core.version>
         <maven.plugin.plugin.version>3.10.2</maven.plugin.plugin.version>
         <maven.plugin.project.version>2.2.1</maven.plugin.project.version>
@@ -184,8 +183,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.11.0</version>
                 <configuration>
-                    <source>${maven.compiler.source}</source>
-                    <target>${maven.compiler.target}</target>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                     <fork>false</fork>
                     <annotationProcessorPaths>
                         <path>
