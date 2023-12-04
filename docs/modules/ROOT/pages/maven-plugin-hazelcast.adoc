@@ -1,6 +1,6 @@
 = Hazelcast {hazelcast-cloud} Maven Plugin
 :description: This Maven plugin is a Java development tool for testing and deploying xref:cluster-side-modules.adoc[cluster-side modules].
-:page-plugin-version: 0.1.0
+:page-plugin-version: 0.1.2
 
 {description}
 
