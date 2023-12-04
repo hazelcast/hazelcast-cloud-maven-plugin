@@ -31,14 +31,14 @@ public class DeployHandlerTest {
         String apiSecret
     ) {
         // given
-        DeployHandler deployHandler = new DeployHandler();
+        var deployHandler = new DeployHandler();
         deployHandler.setApiBaseUrl(apiBaseUrl);
         deployHandler.setClusterId(clusterId);
         deployHandler.setApiKey(apiKey);
         deployHandler.setApiSecret(apiSecret);
 
         // when
-        Throwable exception = assertThrows(MojoExecutionException.class, deployHandler::execute);
+        var exception = assertThrows(MojoExecutionException.class, deployHandler::execute);
 
         // then
         then(exception.getMessage())
@@ -58,14 +58,14 @@ public class DeployHandlerTest {
     @Test
     public void should_fail_if_artifact_absent() {
         // given
-        DeployHandler deployHandler = deployHandler();
-        MavenProject mavenProject = mock(MavenProject.class);
+        var deployHandler = deployHandler();
+        var mavenProject = mock(MavenProject.class);
         deployHandler.setProject(mavenProject);
 
         given(mavenProject.getArtifact()).willReturn(null);
 
         // when
-        Throwable exception = assertThrows(MojoExecutionException.class, deployHandler::execute);
+        var exception = assertThrows(MojoExecutionException.class, deployHandler::execute);
 
         // then
         then(exception.getMessage())
@@ -75,10 +75,10 @@ public class DeployHandlerTest {
     @Test
     public void should_upload_custom_classes_jar() throws MojoExecutionException, MojoFailureException {
         // given
-        DeployHandler deployHandler = deployHandler();
-        MavenProject mavenProject = mockMavenProject();
+        var deployHandler = deployHandler();
+        var mavenProject = mockMavenProject();
         deployHandler.setProject(mavenProject);
-        HazelcastCloudClient hazelcastClient = mock(HazelcastCloudClient.class);
+        var hazelcastClient = mock(HazelcastCloudClient.class);
         deployHandler.setHazelcastCloudClientSupplier(() -> hazelcastClient);
 
         given(hazelcastClient.getClusterStatus("a1b2c3d4")).willReturn(
@@ -96,22 +96,22 @@ public class DeployHandlerTest {
     @Test
     public void should_fail_if_cluster_failed() {
         // given
-        DeployHandler deployHandler = deployHandler();
-        HazelcastCloudClient hazelcastClient = mock(HazelcastCloudClient.class);
+        var deployHandler = deployHandler();
+        var hazelcastClient = mock(HazelcastCloudClient.class);
         deployHandler.setProject(mockMavenProject());
         deployHandler.setHazelcastCloudClientSupplier(() -> hazelcastClient);
 
         given(hazelcastClient.getClusterStatus("a1b2c3d4")).willReturn(Cluster.builder().state("FAILED").build());
 
         // when
-        Throwable exception = assertThrows(MojoFailureException.class, deployHandler::execute);
+        var exception = assertThrows(MojoFailureException.class, deployHandler::execute);
 
         // then
         then(exception.getMessage()).isEqualTo("Something is wrong with cluster, state: FAILED");
     }
 
     private DeployHandler deployHandler() {
-        DeployHandler deployHandler = new DeployHandler();
+        var deployHandler = new DeployHandler();
         deployHandler.setApiBaseUrl("https://localhost");
         deployHandler.setClusterId("a1b2c3d4");
         deployHandler.setApiKey("api-key");
@@ -121,8 +121,8 @@ public class DeployHandlerTest {
     }
 
     private MavenProject mockMavenProject() {
-        MavenProject mavenProject = mock(MavenProject.class);
-        Artifact artifact = mock(Artifact.class);
+        var mavenProject = mock(MavenProject.class);
+        var artifact = mock(Artifact.class);
         given(mavenProject.getArtifact()).willReturn(artifact);
         given(artifact.getFile()).willReturn(new File("custom-classes.jar"));
 

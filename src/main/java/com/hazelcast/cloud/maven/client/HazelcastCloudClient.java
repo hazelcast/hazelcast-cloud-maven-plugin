@@ -3,12 +3,10 @@ package com.hazelcast.cloud.maven.client;
 import java.io.File;
 import java.time.Duration;
 import java.util.HashMap;
-import java.util.Map;
 
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.http.codec.ServerSentEvent;
@@ -55,18 +53,18 @@ public class HazelcastCloudClient {
             .build().get()
             .header(AUTHORIZATION, "Bearer " + token)
             .retrieve()
-            .bodyToFlux(new ParameterizedTypeReference<ServerSentEvent<String>>() {
+            .bodyToFlux(new ParameterizedTypeReference<>() {
             });
     }
 
     public void uploadCustomClasses(String clusterId, File file) {
-        HttpHeaders headers = headersWithAuth(token);
+        var headers = headersWithAuth(token);
         headers.setContentType(MULTIPART_FORM_DATA);
 
-        LinkedMultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+        var body = new LinkedMultiValueMap<String, Object>();
         body.add("customClassesFile", new FileSystemResource(file));
 
-        Map<String, String> pathParams = new HashMap<>();
+        var pathParams = new HashMap<String, String>();
         pathParams.put("clusterId", clusterId);
 
         restTemplate.postForEntity(
