@@ -26,14 +26,14 @@ public class LogHandlerTest {
     @MethodSource
     public void should_fail_given_invalid_params(
         String apiBaseUrl,
-        String clusterName,
+        String clusterId,
         String apiKey,
         String apiSecret
     ) {
         // given
         LogsHandler deployHandler = new LogsHandler();
         deployHandler.setApiBaseUrl(apiBaseUrl);
-        deployHandler.setClusterName(clusterName);
+        deployHandler.setClusterId(clusterId);
         deployHandler.setApiKey(apiKey);
         deployHandler.setApiSecret(apiSecret);
 
@@ -48,24 +48,11 @@ public class LogHandlerTest {
 
     private static Stream<Arguments> should_fail_given_invalid_params() {
         return Stream.of(
-            Arguments.of(null, "pr-a1b2c3d4", "api-key", "api-secret"),
+            Arguments.of(null, "a1b2c3d4", "api-key", "api-secret"),
             Arguments.of("https://api.viridian.hazelcast.com", null, "api-key", "api-key"),
-            Arguments.of("https://api.viridian.hazelcast.com", "pr-a1b2c3d4", null, "api-secret"),
-            Arguments.of("https://api.viridian.hazelcast.com", "pr-a1b2c3d4", "api-key", null)
+            Arguments.of("https://api.viridian.hazelcast.com", "a1b2c3d4", null, "api-secret"),
+            Arguments.of("https://api.viridian.hazelcast.com", "a1b2c3d4", "api-key", null)
         );
-    }
-
-    @Test
-    public void should_fail_given_invalid_cluster_name() {
-        // given
-        LogsHandler logsHandler = logsHandler();
-        logsHandler.setClusterName("a1b2c3d4");
-
-        // when
-        Throwable exception = assertThrows(MojoExecutionException.class, logsHandler::execute);
-
-        // then
-        then(exception.getMessage()).isEqualTo("Invalid clusterName (example: pr-a1b2c3d4)");
     }
 
     @Test
@@ -79,12 +66,12 @@ public class LogHandlerTest {
             Flux.just(
                 ServerSentEvent.<String>builder().data("{\"time\":\"2022-09-01T15:50:08Z\","
                         + "\"logger\":\"com.hazelcast.instance.impl.Node\",\"level\":\"INFO\",\"msg\":\"[10.0.39"
-                        + ".78]:5701 [pr-307] [5.1.1] Using Discovery SPI \",\"clusterId\":\"307\","
+                        + ".78]:5701 [pr-307] [5.1.1] Using Discovery SPI \",\"clusterId\":\"a1b2c3d4\","
                         + "\"customerId\":\"105\"}")
                     .build(),
                 ServerSentEvent.<String>builder().data("{\"time\":\"2022-09-01T15:50:08Z\",\"logger\":\"com"
                         + ".hazelcast.core.LifecycleService\",\"level\":\"INFO\",\"msg\":\"[10.0.39.78]:5701 "
-                        + "[pr-307] [5.1.1] [10.0.39.78]:5701 is STARTING \",\"clusterId\":\"307\","
+                        + "[pr-307] [5.1.1] [10.0.39.78]:5701 is STARTING \",\"clusterId\":\"a1b2c3d4\","
                         + "\"customerId\":\"105\"}")
                     .build())
         );
@@ -104,19 +91,19 @@ public class LogHandlerTest {
             .contains(
                 "{\"time\":\"2022-09-01T15:50:08Z\","
                     + "\"logger\":\"com.hazelcast.instance.impl.Node\",\"level\":\"INFO\",\"msg\":\"[10.0.39"
-                    + ".78]:5701 [pr-307] [5.1.1] Using Discovery SPI \",\"clusterId\":\"307\","
+                    + ".78]:5701 [pr-307] [5.1.1] Using Discovery SPI \",\"clusterId\":\"a1b2c3d4\","
                     + "\"customerId\":\"105\"}")
             .contains(
                 "{\"time\":\"2022-09-01T15:50:08Z\",\"logger\":\"com"
                     + ".hazelcast.core.LifecycleService\",\"level\":\"INFO\",\"msg\":\"[10.0.39.78]:5701 "
-                    + "[pr-307] [5.1.1] [10.0.39.78]:5701 is STARTING \",\"clusterId\":\"307\","
+                    + "[pr-307] [5.1.1] [10.0.39.78]:5701 is STARTING \",\"clusterId\":\"a1b2c3d4\","
                     + "\"customerId\":\"105\"}");
     }
 
     private LogsHandler logsHandler() {
         LogsHandler handler = new LogsHandler();
         handler.setApiBaseUrl("https://localhost");
-        handler.setClusterName("pr-a1b2c3d4");
+        handler.setClusterId("a1b2c3d4");
         handler.setApiKey("api-key");
         handler.setApiSecret("api-key");
 

@@ -1,5 +1,5 @@
 = Hazelcast Viridian Maven Plugin
-:page-plugin-version: 0.0.7
+:page-plugin-version: 0.1.0
 :page-cloud-console: https://viridian.hazelcast.com
 
 image:https://maven-badges.herokuapp.com/maven-central/com.hazelcast.cloud/hazelcast-cloud-maven-plugin/badge.svg[link="https://maven-badges.herokuapp.com/maven-central/com.hazelcast.cloud/hazelcast-cloud-maven-plugin"]
@@ -25,7 +25,7 @@ Make sure that you have the following:
             <version>{page-plugin-version}</version>
             <configuration>
                 <apiBaseUrl>https://api.viridian.hazelcast.com</apiBaseUrl>
-                <clusterName>$\{clusterName}</clusterName>
+                <clusterId>$\{clusterId}</clusterId>
                 <apiKey>$\{apiKey}</apiKey>
                 <apiSecret>$\{apiSecret}</apiSecret>
             </configuration>
@@ -40,11 +40,11 @@ Make sure that you have the following:
 |===
 | Parameter|Description| Example
 
-| clusterName
-| Cluster name
+| clusterId
+| Cluster ID
 
-Find your cluster name in the link:{page-cloud-console}[Viridian Cloud console] by clicking *Connect Client*.
-| pr-a1b2c3d4
+Find your cluster id in the link:{page-cloud-console}[Viridian Cloud console].
+| a1b2c3d4
 
 | apiKey
 | API key

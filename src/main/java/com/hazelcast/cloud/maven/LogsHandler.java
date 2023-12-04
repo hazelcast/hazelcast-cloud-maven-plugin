@@ -13,7 +13,6 @@ import org.springframework.http.codec.ServerSentEvent;
 import com.hazelcast.cloud.maven.auth.ApiAuthenticator;
 import com.hazelcast.cloud.maven.client.HazelcastCloudClient;
 
-import static com.hazelcast.cloud.maven.cluster.ClusterIdExtractor.extractClusterId;
 import static com.hazelcast.cloud.maven.validation.Errors.propertyMissingError;
 import static org.codehaus.plexus.util.StringUtils.isEmpty;
 
@@ -24,8 +23,8 @@ public class LogsHandler extends AbstractMojo {
     @Parameter(property = "apiBaseUrl", required = true)
     private String apiBaseUrl;
 
-    @Parameter(property = "clusterName", required = true)
-    private String clusterName;
+    @Parameter(property = "clusterId", required = true)
+    private String clusterId;
 
     @Parameter(property = "apiKey", required = true)
     private String apiKey;
@@ -40,8 +39,6 @@ public class LogsHandler extends AbstractMojo {
     public void execute() throws MojoExecutionException {
         validateParams();
 
-        String clusterId = extractClusterId(clusterName);
-
         hazelcastCloudClientSupplier.get().getClusterLogs(clusterId)
             .mapNotNull(ServerSentEvent::data)
             .toStream()
@@ -52,8 +49,8 @@ public class LogsHandler extends AbstractMojo {
         if (isEmpty(apiBaseUrl)) {
             propertyMissingError("apiBaseUrl");
         }
-        if (isEmpty(clusterName)) {
-            propertyMissingError("clusterName");
+        if (isEmpty(clusterId)) {
+            propertyMissingError("clusterId");
         }
         if (isEmpty(apiKey)) {
             propertyMissingError("apiKey");

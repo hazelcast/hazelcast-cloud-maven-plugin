@@ -17,7 +17,6 @@ import com.hazelcast.cloud.maven.auth.ApiAuthenticator;
 import com.hazelcast.cloud.maven.client.HazelcastCloudClient;
 import com.hazelcast.cloud.maven.exception.ClusterFailureException;
 
-import static com.hazelcast.cloud.maven.cluster.ClusterIdExtractor.extractClusterId;
 import static com.hazelcast.cloud.maven.validation.Errors.propertyMissingError;
 import static java.lang.System.currentTimeMillis;
 import static org.codehaus.plexus.util.StringUtils.isEmpty;
@@ -29,8 +28,8 @@ public class DeployHandler extends AbstractMojo {
     @Parameter(property = "apiBaseUrl", defaultValue = "https://api.viridian.hazelcast.com")
     private String apiBaseUrl;
 
-    @Parameter(property = "clusterName", required = true)
-    private String clusterName;
+    @Parameter(property = "clusterId", required = true)
+    private String clusterId;
 
     @Parameter(property = "apiKey", required = true)
     private String apiKey;
@@ -49,13 +48,12 @@ public class DeployHandler extends AbstractMojo {
         long startTime = currentTimeMillis();
 
         validateParams();
-        String clusterId = extractClusterId(clusterName);
 
         HazelcastCloudClient hazelcastCloudClient = hazelcastCloudClientSupplier.get();
         File jar = project.getArtifact().getFile();
 
         getLog().info(String.format(
-            "Artifact with custom classes %s is being uploaded to the Hazelcast cluster '%s'", jar, clusterName));
+            "Artifact with custom classes %s is being uploaded to the Hazelcast cluster '%s'", jar, clusterId));
 
         hazelcastCloudClient.uploadCustomClasses(clusterId, jar);
 
@@ -98,8 +96,8 @@ public class DeployHandler extends AbstractMojo {
         if (isEmpty(apiBaseUrl)) {
             propertyMissingError("apiBaseUrl");
         }
-        if (isEmpty(clusterName)) {
-            propertyMissingError("clusterName");
+        if (isEmpty(clusterId)) {
+            propertyMissingError("clusterId");
         }
         if (isEmpty(apiKey)) {
             propertyMissingError("apiKey");
