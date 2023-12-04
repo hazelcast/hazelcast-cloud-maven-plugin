@@ -31,14 +31,14 @@ public class LogHandlerTest {
         String apiSecret
     ) {
         // given
-        LogsHandler deployHandler = new LogsHandler();
+        var deployHandler = new LogsHandler();
         deployHandler.setApiBaseUrl(apiBaseUrl);
         deployHandler.setClusterId(clusterId);
         deployHandler.setApiKey(apiKey);
         deployHandler.setApiSecret(apiSecret);
 
         // when
-        Throwable exception = assertThrows(MojoExecutionException.class, deployHandler::execute);
+        var exception = assertThrows(MojoExecutionException.class, deployHandler::execute);
 
         // then
         then(exception.getMessage())
@@ -58,8 +58,8 @@ public class LogHandlerTest {
     @Test
     public void should_stream_cluster_logs() throws MojoExecutionException {
         // given
-        LogsHandler handler = logsHandler();
-        HazelcastCloudClient hazelcastClient = mock(HazelcastCloudClient.class);
+        var handler = logsHandler();
+        var hazelcastClient = mock(HazelcastCloudClient.class);
         handler.setHazelcastCloudClientSupplier(() -> hazelcastClient);
 
         given(hazelcastClient.getClusterLogs("a1b2c3d4")).willReturn(
@@ -77,7 +77,7 @@ public class LogHandlerTest {
         );
 
         // when
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        var out = new ByteArrayOutputStream();
         System.setOut(new PrintStream(out));
         try {
             handler.execute();
@@ -101,7 +101,7 @@ public class LogHandlerTest {
     }
 
     private LogsHandler logsHandler() {
-        LogsHandler handler = new LogsHandler();
+        var handler = new LogsHandler();
         handler.setApiBaseUrl("https://localhost");
         handler.setClusterId("a1b2c3d4");
         handler.setApiKey("api-key");

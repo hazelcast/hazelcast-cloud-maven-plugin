@@ -1,6 +1,5 @@
 package com.hazelcast.cloud.maven;
 
-import java.io.File;
 import java.util.function.Supplier;
 
 import lombok.Setter;
@@ -49,8 +48,8 @@ public class DeployHandler extends AbstractMojo {
 
         validateParams();
 
-        HazelcastCloudClient hazelcastCloudClient = hazelcastCloudClientSupplier.get();
-        File jar = project.getArtifact().getFile();
+        var hazelcastCloudClient = hazelcastCloudClientSupplier.get();
+        var jar = project.getArtifact().getFile();
 
         getLog().info(String.format(
             "Artifact with custom classes %s is being uploaded to the Hazelcast cluster '%s'", jar, clusterId));
@@ -67,7 +66,7 @@ public class DeployHandler extends AbstractMojo {
                     long secs = (currentTimeMillis() - startTime) / 1000;
                     getLog().info(secs + "s");
 
-                    String state = hazelcastCloudClient.getClusterStatus(clusterId).state;
+                    var state = hazelcastCloudClient.getClusterStatus(clusterId).state;
                     switch (state) {
                         case "RUNNING":
                             return state;

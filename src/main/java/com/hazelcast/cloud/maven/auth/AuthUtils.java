@@ -9,7 +9,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 public class AuthUtils {
 
     public static HttpHeaders headersWithAuth(String token) {
-        HttpHeaders headers = new HttpHeaders();
+        var headers = new HttpHeaders();
         headers.add(AUTHORIZATION, "Bearer " + token);
         return headers;
     }

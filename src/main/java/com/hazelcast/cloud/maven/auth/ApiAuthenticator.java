@@ -24,7 +24,7 @@ public class ApiAuthenticator {
     }
 
     private static String login(String baseURL, String apiKey, String apiSecret) {
-        CustomerApiLogin customerApiLogin = CustomerApiLogin.builder()
+        var customerApiLogin = CustomerApiLogin.builder()
             .apiKey(apiKey)
             .apiSecret(apiSecret)
             .build();
