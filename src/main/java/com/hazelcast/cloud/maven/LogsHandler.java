@@ -20,6 +20,8 @@ import static org.codehaus.plexus.util.StringUtils.isEmpty;
 @Setter
 public class LogsHandler extends AbstractMojo {
 
+    private static final String INTERNAL_MSG_PREFIX = "$__i__";
+
     @Parameter(property = "apiBaseUrl", required = true)
     private String apiBaseUrl;
 
@@ -39,9 +41,11 @@ public class LogsHandler extends AbstractMojo {
     public void execute() throws MojoExecutionException {
         validateParams();
 
-        hazelcastCloudClientSupplier.get().getClusterLogs(clusterId)
+        hazelcastCloudClientSupplier.get()
+            .getClusterLogs(clusterId)
             .mapNotNull(ServerSentEvent::data)
             .toStream()
+            .filter(msg -> !msg.startsWith(INTERNAL_MSG_PREFIX))
             .forEach(System.out::println);
     }
 
