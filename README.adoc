@@ -75,7 +75,7 @@ mvn clean package hazelcast-cloud:deploy
 |stream-logs
 |(experimental) Stream the latest 1,000 lines of logs from a single member in the connected cluster.
 |
-|If a cluster member is restarted for any reason, logs stream will be interrupted and needs to be restarted as well.
+|If a cluster member is restarted for any reason, logs stream will be interrupted and must be restarted.
 [source,bash]
 ----
 mvn hazelcast-cloud:stream-logs
