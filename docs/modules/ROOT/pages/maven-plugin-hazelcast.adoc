@@ -11,7 +11,9 @@ NOTE: This plugin is for {hazelcast-cloud} Standard clusters only.
 Make sure that you have the following:
 
 - link:https://maven.apache.org/install.html[Maven]
-- The `JAVA_HOME` environment variable set to the path of JDK 11
+- The `JAVA_HOME` environment variable set to the path of your JDK
++
+NOTE: Hazelcast {hazelcast-cloud} requires JDK 17 or later.
 
 == Usage Example
 
@@ -24,7 +26,7 @@ Make sure that you have the following:
             <artifactId>hazelcast-cloud-maven-plugin</artifactId>
             <version>{page-plugin-version}</version>
             <configuration>
-                <apiBaseUrl>https://api.viridian.hazelcast.com</apiBaseUrl>
+                <apiBaseUrl>https://api.cloud.hazelcast.com</apiBaseUrl>
                 <clusterId>$\{clusterId}</clusterId>
                 <apiKey>$\{apiKey}</apiKey>
                 <apiSecret>$\{apiSecret}</apiSecret>
