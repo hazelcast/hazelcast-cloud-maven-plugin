@@ -24,7 +24,7 @@ import static org.codehaus.plexus.util.StringUtils.isEmpty;
 @Setter
 public class DeployHandler extends AbstractMojo {
 
-    @Parameter(property = "apiBaseUrl", defaultValue = "https://api.viridian.hazelcast.com")
+    @Parameter(property = "apiBaseUrl", defaultValue = "https://api.cloud.hazelcast.com")
     private String apiBaseUrl;
 
     @Parameter(property = "clusterId", required = true)
