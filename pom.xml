@@ -56,7 +56,7 @@
     <properties>
         <java.version>11</java.version>
         <maven.plugin.core.version>3.9.6</maven.plugin.core.version>
-        <maven.plugin.plugin.version>3.11.0</maven.plugin.plugin.version>
+        <maven.plugin.plugin.version>3.15.1</maven.plugin.plugin.version>
         <maven.plugin.project.version>2.2.1</maven.plugin.project.version>
         <lombok.version>1.18.32</lombok.version>
         <maven.gpg.plugin.version>3.2.1</maven.gpg.plugin.version>
